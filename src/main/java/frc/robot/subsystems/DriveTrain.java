@@ -42,6 +42,7 @@ public final class DriveTrain extends SubsystemBaseWrapper {
     public DriveTrain() {
         super();
         // Motors
+        robotDrive.setRightSideInverted(true);
         gyro.calibrate();
         frontRight.configFactoryDefault();
         frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);

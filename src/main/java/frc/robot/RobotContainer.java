@@ -9,11 +9,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+//simport edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.MotorSubsystem;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -73,14 +78,16 @@ public final class RobotContainer {
     private void configureButtonBindings() {
         thumbButton.toggleWhenPressed(
             new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, false));
- }
-    // public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
-    //     if(toggle){
-    //         jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
-    //     }
-    //     else{
-    //         jB.whileHeld(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
-    //     }   
+    }
+    
+    public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
+        if(toggle){
+            jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
+        }
+        else{
+            jB.whileHeld(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
+        }
+    }   
     public double getJoystickX() {
         return this.joystick.getRawAxis(Constants.Joystick.X_AXIS);
     }
