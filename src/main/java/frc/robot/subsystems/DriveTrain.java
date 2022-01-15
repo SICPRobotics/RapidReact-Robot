@@ -8,19 +8,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Constants;
 import frc.robot.SubsystemBaseWrapper;
 
@@ -28,21 +20,21 @@ import frc.robot.SubsystemBaseWrapper;
  * the DriveTrain, aka the thing that moves the robot
  */
 public final class DriveTrain extends SubsystemBaseWrapper {
-    private final DifferentialDriveOdometry odometry;
-    public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(2);
-    private final ChassisSpeeds chassisSpeeds;
+    // private final DifferentialDriveOdometry odometry;
+    // public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(2);
+    // private final ChassisSpeeds chassisSpeeds;
     private final Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0); //SPI.Port.kMXP ?
     private final WPI_TalonSRX frontRight = new WPI_TalonSRX(Constants.DriveTrain.FRONT_RIGHT_MOTOR_ID);
     private final WPI_TalonSRX rearRight = new WPI_TalonSRX(Constants.DriveTrain.REAR_RIGHT_MOTOR_ID);
     private final WPI_TalonSRX frontLeft = new WPI_TalonSRX(Constants.DriveTrain.FRONT_LEFT_MOTOR_ID);
     private final WPI_TalonSRX rearLeft = new WPI_TalonSRX(Constants.DriveTrain.REAR_LEFT_MOTOR_ID);
-    private final SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, rearLeft);
-    private final SpeedControllerGroup right = new SpeedControllerGroup(frontRight, rearRight);
+    private final MotorControllerGroup left = new MotorControllerGroup(frontLeft, rearLeft);
+    private final MotorControllerGroup right = new MotorControllerGroup(frontRight, rearRight);
     private final DifferentialDrive robotDrive = new DifferentialDrive(left, right);
     public DriveTrain() {
         super();
+        right.setInverted(true);
         // Motors
-        robotDrive.setRightSideInverted(true);
         gyro.calibrate();
         frontRight.configFactoryDefault();
         frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
@@ -55,8 +47,8 @@ public final class DriveTrain extends SubsystemBaseWrapper {
         rearLeft.configFactoryDefault();
         //left = new SpeedControllerGroup(frontLeft, rearLeft);
         //this.robotDrive = new DifferentialDrive(left, right);
-        odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
-        chassisSpeeds = new ChassisSpeeds(0,0,0);
+        // odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
+        // chassisSpeeds = new ChassisSpeeds(0,0,0);
         //reset();
     }
     //Mostly taken from last year's robot
@@ -113,7 +105,6 @@ public final class DriveTrain extends SubsystemBaseWrapper {
         //System.out.println(odometry.getPoseMeters().getTranslation().getX());
         //System.out.println(getRadians());
         //System.out.println(this.getPose().toString());
-        SmartDashboard.putString("Pose2d", this.getPose().toString());
     }
     // public double getRightDistanceMeters(){
     //     return ((double)(frontRight.getSelectedSensorPosition()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * Constants.DriveTrain.WHEEL_CIRCUMFRANCE;
@@ -135,9 +126,6 @@ public final class DriveTrain extends SubsystemBaseWrapper {
     }
     public double getRadians(){
         return Math.toRadians(-gyro.getAngle());
-    }
-    public Pose2d getPose(){
-        return odometry.getPoseMeters().relativeTo(new Pose2d(new Translation2d(0,0), new Rotation2d((3*Math.PI)/2)));
     }
     // private ChassisSpeeds updateVelocity(){
     //     return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocityMeters(),getRightVelocityMeters()));
