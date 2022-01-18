@@ -36,8 +36,8 @@ public final class Constants {
     }
 
     public final class Joystick{
-        public static final int X_AXIS = 1;
-        public static final int Y_AXIS = 2;
+        public static final int X_AXIS = 0;
+        public static final int Y_AXIS = 1;
         public static final int ADJUST_AXIS = 3;
     }
 
