@@ -30,15 +30,13 @@ public final class Constants {
         public static final int REAR_RIGHT_MOTOR_ID = 0;
         public static final int REAR_LEFT_MOTOR_ID = 3;
         public static final double COUNTS_PER_ROTAION = 4096;
-        public static final double X_AXIS_DEADZONE_RANGE = 0.005;
-        public static final double Y_AXIS_DEADZONE_RANGE = 0.005;
-        public static final double X_AXIS_DEADZONE_Y_MIN = 0.1; 
     }
 
     public final class Joystick{
-        public static final int X_AXIS = 1;
-        public static final int Y_AXIS = 2;
+        public static final int X_AXIS = 0;
+        public static final int Y_AXIS = 1;
         public static final int ADJUST_AXIS = 3;
+        public static final int Z_AXIS = 2;
     }
 
 }
