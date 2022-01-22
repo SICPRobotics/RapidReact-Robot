@@ -246,4 +246,7 @@ public class WillowMath {
         }
         return derivative;
     }
+    public static double diameterToCircumfrance(double diameter){
+        return Math.PI * diameter;
+    }
 }

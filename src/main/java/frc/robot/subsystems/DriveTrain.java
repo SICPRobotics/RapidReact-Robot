@@ -6,6 +6,14 @@ import java.util.function.BiConsumer;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -15,14 +23,15 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.SubsystemBaseWrapper;
+import frc.robot.WillowMath;
 
 /**
  * the DriveTrain, aka the thing that moves the robot
  */
 public final class DriveTrain extends SubsystemBaseWrapper {
-    // private final DifferentialDriveOdometry odometry;
-    // public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(2);
-    // private final ChassisSpeeds chassisSpeeds;
+    private final DifferentialDriveOdometry odometry;
+    public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23.5));
+    private final ChassisSpeeds chassisSpeeds;
     private final Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0); //SPI.Port.kMXP ?
     private final WPI_TalonSRX frontRight = new WPI_TalonSRX(Constants.DriveTrain.FRONT_RIGHT_MOTOR_ID);
     private final WPI_TalonSRX rearRight = new WPI_TalonSRX(Constants.DriveTrain.REAR_RIGHT_MOTOR_ID);
@@ -40,15 +49,12 @@ public final class DriveTrain extends SubsystemBaseWrapper {
         frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
         frontRight.setSelectedSensorPosition(0);
         rearRight.configFactoryDefault();
-        //right = new SpeedControllerGroup(frontRight, rearRight);
         frontLeft.configFactoryDefault();
         frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
         frontLeft.setSelectedSensorPosition(0); // LEFT IS WRONG DIRECTION BY DEFAULT
         rearLeft.configFactoryDefault();
-        //left = new SpeedControllerGroup(frontLeft, rearLeft);
-        //this.robotDrive = new DifferentialDrive(left, right);
-        // odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
-        // chassisSpeeds = new ChassisSpeeds(0,0,0);
+        odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
+        chassisSpeeds = new ChassisSpeeds(0,0,0);
         //reset();
     }
     //Mostly taken from last year's robot
@@ -91,33 +97,34 @@ public final class DriveTrain extends SubsystemBaseWrapper {
     // }
     
     public void periodic() {
-        //updatePose();
+        updatePose();
         SmartDashboard.putNumber("TalonSRX 0 (front right) Temperature", frontRight.getTemperature());
         SmartDashboard.putNumber("TalonSRX 1 (rear right) Temperature", rearRight.getTemperature());
         SmartDashboard.putNumber("TalonSRX 2 (rear left) Temperature", rearLeft.getTemperature());
         SmartDashboard.putNumber("TalonSRX 3 (front left) Temperature", frontLeft.getTemperature());
-        // SmartDashboard.putNumberArray("test Array", new double[2]);
-        // SmartDashboard.putNumber("Linear Velocity", getLinearVelocity());
-        // SmartDashboard.putNumber("Angular Velocity", getAngularVelocity());
+        SmartDashboard.putNumberArray("test Array", new double[2]);
+        SmartDashboard.putNumber("Linear Velocity", getLinearVelocity());
+        SmartDashboard.putNumber("Angular Velocity", getAngularVelocity());
         SmartDashboard.putNumber("Front Left Motor Volts", getLeftVolts());
         SmartDashboard.putNumber("Front Right Motor Volts", getRightVolts());
+        SmartDashboard.putString("Pose", getPose().toString());
         //System.out.println(this.getLeftDistanceMeters());
         //System.out.println(odometry.getPoseMeters().getTranslation().getX());
         //System.out.println(getRadians());
         //System.out.println(this.getPose().toString());
     }
-    // public double getRightDistanceMeters(){
-    //     return ((double)(frontRight.getSelectedSensorPosition()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * Constants.DriveTrain.WHEEL_CIRCUMFRANCE;
-    // }
-    // public double getLeftDistanceMeters(){
-    //     return ((double)(-frontLeft.getSelectedSensorPosition()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * Constants.DriveTrain.WHEEL_CIRCUMFRANCE;
-    // }
-    // public double getRightVelocityMeters(){
-    //     return ((double)(frontRight.getSelectedSensorVelocity()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * Constants.DriveTrain.WHEEL_CIRCUMFRANCE * 10;
-    // }
-    // public double getLeftVelocityMeters(){
-    //     return ((double)(-frontLeft.getSelectedSensorVelocity()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * Constants.DriveTrain.WHEEL_CIRCUMFRANCE * 10;
-    // }
+    public double getRightDistanceMeters(){
+        return ((double)(frontRight.getSelectedSensorPosition()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * WillowMath.diameterToCircumfrance(Units.inchesToMeters(Constants.DriveTrain.WHEEL_Diameter_INCHES));
+    }
+    public double getLeftDistanceMeters(){
+        return ((double)(-frontLeft.getSelectedSensorPosition()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * WillowMath.diameterToCircumfrance(Units.inchesToMeters(Constants.DriveTrain.WHEEL_Diameter_INCHES));
+    }
+    public double getRightVelocityMeters(){
+        return ((double)(frontRight.getSelectedSensorVelocity()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * WillowMath.diameterToCircumfrance(Units.inchesToMeters(Constants.DriveTrain.WHEEL_Diameter_INCHES));
+    }
+    public double getLeftVelocityMeters(){
+        return ((double)(-frontLeft.getSelectedSensorVelocity()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * WillowMath.diameterToCircumfrance(Units.inchesToMeters(Constants.DriveTrain.WHEEL_Diameter_INCHES));
+    }
     public double getRightVolts(){
         return frontRight.getMotorOutputVoltage();
     }
@@ -127,30 +134,28 @@ public final class DriveTrain extends SubsystemBaseWrapper {
     public double getRadians(){
         return Math.toRadians(-gyro.getAngle());
     }
-    // private ChassisSpeeds updateVelocity(){
-    //     return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocityMeters(),getRightVelocityMeters()));
-    // }
-    // public double getLinearVelocity(){
-    //     return updateVelocity().vxMetersPerSecond;
-    // }
-    // public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    //     return new DifferentialDriveWheelSpeeds(getLeftVelocityMeters(),getRightVelocityMeters());
-    //   }
-    /*
-        ENCODER MESUREMENTS OFF BY A BIT, encoders display value of 240in, 6.09m when the actual distance is 212in 5.38m
-        FIX ASAP CHECK WHEEL CIRCUMFRANCE
-    */
-    // public double getAngularVelocity(){
-    //     return updateVelocity().omegaRadiansPerSecond;
-    // }
-    // private void updatePose(){
-        
-    //     odometry.update(new Rotation2d(getRadians()), getLeftDistanceMeters(), getRightDistanceMeters());
-    // }
-    // public void reset(){
-    //     frontLeft.setSelectedSensorPosition(0);
-    //     frontRight.setSelectedSensorPosition(0);
-    //     gyro.calibrate();
-    //     odometry.resetPosition(new Pose2d(new Translation2d(0,0), new Rotation2d(getRadians())), new Rotation2d(getRadians()));
-    // }
+    private ChassisSpeeds updateVelocity(){
+        return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocityMeters(),getRightVelocityMeters()));
+    }
+    public double getLinearVelocity(){
+        return updateVelocity().vxMetersPerSecond;
+    }
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(getLeftVelocityMeters(),getRightVelocityMeters());
+    }
+    public double getAngularVelocity(){
+        return updateVelocity().omegaRadiansPerSecond;
+    }
+    public Pose2d getPose(){
+        return odometry.getPoseMeters();
+    }
+    private void updatePose(){
+        odometry.update(new Rotation2d(getRadians()), getLeftDistanceMeters(), getRightDistanceMeters());
+    }
+    public void reset(){
+        frontLeft.setSelectedSensorPosition(0);
+        frontRight.setSelectedSensorPosition(0);
+        gyro.calibrate();
+        odometry.resetPosition(new Pose2d(new Translation2d(0,0), new Rotation2d(getRadians())), new Rotation2d(getRadians()));
+    }
 }
