@@ -34,7 +34,17 @@ public final class Constants {
         public static final double X_AXIS_DEADZONE_RANGE = 0.005;
         public static final double Y_AXIS_DEADZONE_RANGE = 0.005;
         public static final double X_AXIS_DEADZONE_Y_MIN = 0.1; 
+        
+        public final class kinematics{
+            public static final double S = 0; // static voltage constant ks
+            public static final double V = 0; // velocity voltage constant kv
+            public static final double A = 0; // acceloration voltage constant ka
+            public static final double P = 0; // Proportionality gain for the drive train 
+            public static final double I = 0; // Interal gain for the drive train 
+            public static final double D = 0; // Derivative gain for the drive train 
+        }
     }
+    
 
     public final class Joystick{
         public static final int X_AXIS = 0;
