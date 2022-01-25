@@ -36,10 +36,10 @@ public final class Constants {
         public static final double X_AXIS_DEADZONE_Y_MIN = 0.1; 
         
         public final class kinematics{
-            public static final double S = 0; // static voltage constant ks
-            public static final double V = 0; // velocity voltage constant kv
-            public static final double A = 0; // acceloration voltage constant ka
-            public static final double P = 0; // Proportionality gain for the drive train 
+            public static final double S = 1.4521; // static voltage constant ks THIS VALUE IS FOR 2021 Robot
+            public static final double V = 2.8559; // velocity voltage constant kv THIS VALUE IS FOR 2021 Robot
+            public static final double A = 1.3644; // acceloration voltage constant ka THIS VALUE IS FOR 2021 Robot
+            public static final double P = 2.5115; // Proportionality gain for the drive train THIS VALUE IS FOR 2021 Robot
             public static final double I = 0; // Interal gain for the drive train 
             public static final double D = 0; // Derivative gain for the drive train 
         }

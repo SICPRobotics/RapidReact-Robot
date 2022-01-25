@@ -6,6 +6,12 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,6 +36,7 @@ public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final Joystick joystick = new Joystick(0);
     private final DriveTrain driveTrain;
+    private final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
     private final JoystickButton thumbButton;
     private final JoystickButton twelveButton;
     private final JoystickButton trigger;
@@ -67,6 +74,10 @@ public final class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
         SmartDashboard.putNumber("Auton Chooser", 0);
+        trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
+            new Translation2d(2,1),
+            new Translation2d(5, -1)
+        ), new Pose2d(new Translation2d(7,0), new Rotation2d(0)), new TrajectoryConfig(4, 2), "test");
     }
 
     /**
@@ -107,7 +118,7 @@ public final class RobotContainer {
     // }
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
-        return null;
+        return trajectoryGeneration.getTrajectoryCommand(driveTrain, "test");
     }
     
 }
