@@ -24,11 +24,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.SubsystemBaseWrapper;
 import frc.robot.WillowMath;
+import frc.robot.subsystems.MotorSubsystem;
 
 /**
  * the DriveTrain, aka the thing that moves the robot
  */
-public final class DriveTrain extends SubsystemBaseWrapper {
+public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsystem{
     private final DifferentialDriveOdometry odometry;
     public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23.5));
     private final ChassisSpeeds chassisSpeeds;
@@ -56,6 +57,15 @@ public final class DriveTrain extends SubsystemBaseWrapper {
         odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
         chassisSpeeds = new ChassisSpeeds(0,0,0);
         //reset();
+    }
+    public void setMotor(double value) {
+        this.robotDrive.arcadeDrive(value, 0);
+    }
+    public void turnOff() {
+        this.robotDrive.arcadeDrive(0, 0);
+    }
+    public void turnOn(double velocity) {
+        this.robotDrive.arcadeDrive(velocity, 0);
     }
     //Mostly taken from last year's robot
     /**
@@ -108,6 +118,10 @@ public final class DriveTrain extends SubsystemBaseWrapper {
         SmartDashboard.putNumber("Front Left Motor Volts", getLeftVolts());
         SmartDashboard.putNumber("Front Right Motor Volts", getRightVolts());
         SmartDashboard.putString("Pose", getPose().toString());
+        SmartDashboard.putNumber("Front Right Motor Position", getRightDistanceMeters());
+        SmartDashboard.putNumber("Front Left Motor Position", getLeftDistanceMeters());
+        SmartDashboard.putNumber("Front Right Motor Velocity", getRightVelocityMeters());
+        SmartDashboard.putNumber("Front Left Motor Velocity", getLeftVelocityMeters());
         //System.out.println(this.getLeftDistanceMeters());
         //System.out.println(odometry.getPoseMeters().getTranslation().getX());
         //System.out.println(getRadians());
