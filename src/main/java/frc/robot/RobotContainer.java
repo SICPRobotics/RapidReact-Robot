@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.Constants.Climber;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.controllers.WolfbyteJoystick;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 /**
@@ -31,6 +33,7 @@ public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final WolfbyteJoystick joystick;
     private final DriveTrain driveTrain;
+    private final ClimbSubsystem climber;
 
 
     /**
@@ -39,6 +42,7 @@ public final class RobotContainer {
     public RobotContainer() {
         driveTrain = new DriveTrain();
         joystick = new WolfbyteJoystick(0);
+        climber = new ClimbSubsystem();
             
         driveTrain.setDefaultCommand(
             new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, true));
@@ -56,6 +60,7 @@ public final class RobotContainer {
      */
     private void configureButtonBindings() {
         joystick.setButtonCommand(driveTrain, 0, new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, false), WolfbyteJoystick.TOGGLE_BUTTON);
+        joystick.setButtonMotorCommand(climber, 12, 1, WolfbyteJoystick.HELD_BUTTON);
     }
     
     public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
