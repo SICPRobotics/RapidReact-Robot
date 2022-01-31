@@ -22,7 +22,10 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.Constants.Climber;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.controllers.WolfbyteJoystick;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 /**
@@ -34,20 +37,10 @@ import frc.robot.subsystems.MotorSubsystem;
  */
 public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final Joystick joystick = new Joystick(0);
+    private final WolfbyteJoystick joystick;
     private final DriveTrain driveTrain;
+    private final ClimbSubsystem climber;
     private final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
-    private final JoystickButton thumbButton;
-    private final JoystickButton twelveButton;
-    private final JoystickButton trigger;
-    private final JoystickButton threeButton;
-    private final JoystickButton five;
-    private final JoystickButton six;
-    private final JoystickButton eleven;
-    private final JoystickButton four;
-    private final JoystickButton ten;
-    private final JoystickButton nine;
-    private final JoystickButton eight;
 
 
     /**
@@ -55,21 +48,12 @@ public final class RobotContainer {
      */
     public RobotContainer() {
         driveTrain = new DriveTrain();
-                    
+        joystick = new WolfbyteJoystick(0);
+        climber = new ClimbSubsystem();
+            
         driveTrain.setDefaultCommand(
             new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, true));
 
-        thumbButton = new JoystickButton(joystick, 2);
-        twelveButton = new JoystickButton(joystick, 12);
-        trigger = new JoystickButton(joystick, 1);
-        threeButton = new JoystickButton(joystick, 3);
-        five = new JoystickButton(joystick, 5);
-        six = new JoystickButton(joystick, 6);
-        eleven = new JoystickButton(joystick, 11);
-        four = new JoystickButton(joystick, 4);
-        ten = new JoystickButton(joystick, 10);
-        nine = new JoystickButton(joystick, 9);
-        eight = new JoystickButton(joystick, 8);
         // Configure the button bindings
         configureButtonBindings();
         SmartDashboard.putNumber("Auton Chooser", 0);
@@ -86,8 +70,8 @@ public final class RobotContainer {
      * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        thumbButton.toggleWhenPressed(
-            new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, false));
+        joystick.setButtonCommand(driveTrain, 0, new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, false), WolfbyteJoystick.TOGGLE_BUTTON);
+        joystick.setButtonMotorCommand(climber, 12, 1, WolfbyteJoystick.HELD_BUTTON);
     }
     
     public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
@@ -105,7 +89,7 @@ public final class RobotContainer {
         return -this.joystick.getRawAxis(Constants.Joystick.Y_AXIS);
     }
     public double getJoystickZ() {
-        return this.joystick.getRawAxis(2);
+        return this.joystick.getRawAxis(Constants.Joystick.Z_AXIS);
     }
     public double getJoystickAdjust() {
         return this.joystick.getRawAxis(Constants.Joystick.ADJUST_AXIS);
