@@ -39,4 +39,8 @@ public final class Constants {
         public static final int Z_AXIS = 2;
     }
 
+    public final class Climber{
+        public static final int CLIMBER_MOTOR_ID = 4;
+    }
+
 }
