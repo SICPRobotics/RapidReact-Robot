@@ -55,8 +55,7 @@ public final class RobotContainer {
      */
     public RobotContainer() {
         driveTrain = new DriveTrain();
-
-            
+                    
         driveTrain.setDefaultCommand(
             new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, true));
 
