@@ -35,6 +35,11 @@ public final class Constants {
         public static final double Y_AXIS_DEADZONE_RANGE = 0.005;
         public static final double X_AXIS_DEADZONE_Y_MIN = 0.1; 
         
+        public final class ControlSystems{
+            public static final int ARCADE_DRIVE_STANDARD = 0;
+            public static final int TANK_DRIVE_TEST = 1;
+            public static final int TANK_DRIVE_WITH_VOLTS = 2;
+        }
         public final class kinematics{
             public static final double S = 1.4521; // static voltage constant ks THIS VALUE IS FOR 2021 Robot
             public static final double V = 2.8559; // velocity voltage constant kv THIS VALUE IS FOR 2021 Robot
@@ -45,10 +50,13 @@ public final class Constants {
         }
     }
     
-
+    public final class Climber{
+        public static final int CLIMBER_MOTOR_ID = 4;
+    }
     public final class Joystick{
         public static final int X_AXIS = 0;
         public static final int Y_AXIS = 1;
+        public static final int Z_AXIS = 2;
         public static final int ADJUST_AXIS = 3;
     }
 

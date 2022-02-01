@@ -52,11 +52,11 @@ public final class RobotContainer {
         climber = new ClimbSubsystem();
             
         driveTrain.setDefaultCommand(
-            new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, true));
+            new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, true, Constants.DriveTrain.ControlSystems.ARCADE_DRIVE_STANDARD));
 
         // Configure the button bindings
         configureButtonBindings();
-        SmartDashboard.putNumber("Auton Chooser", 0);
+        //SmartDashboard.putNumber("Auton Chooser", 0);
         trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
             new Translation2d(2,1),
             new Translation2d(5, -1)
@@ -70,8 +70,11 @@ public final class RobotContainer {
      * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        joystick.setButtonCommand(driveTrain, 0, new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, false), WolfbyteJoystick.TOGGLE_BUTTON);
+        joystick.setDriveTrainCommandButton(driveTrain, 2, Constants.DriveTrain.ControlSystems.ARCADE_DRIVE_STANDARD, false, WolfbyteJoystick.TOGGLE_BUTTON);
         joystick.setButtonMotorCommand(climber, 12, 1, WolfbyteJoystick.HELD_BUTTON);
+        joystick.setButtonMotorCommand(driveTrain, 11, 1, WolfbyteJoystick.HELD_BUTTON);
+        joystick.setButtonCommand(driveTrain, 10, new FunctionalCommand(() -> driveTrain.reset(), () -> {}, (b) -> {}, () -> false, driveTrain), WolfbyteJoystick.HELD_BUTTON);
+        joystick.setDriveTrainCommandButton(driveTrain, 9, Constants.DriveTrain.ControlSystems.TANK_DRIVE_WITH_VOLTS, false, WolfbyteJoystick.TOGGLE_BUTTON);
     }
     
     public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {

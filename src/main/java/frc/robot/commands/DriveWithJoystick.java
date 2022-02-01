@@ -11,23 +11,25 @@ public final class DriveWithJoystick extends CommandBase {
     private final DoubleSupplier rotateValueGetter;
     private final DoubleSupplier adjustValueGetter;
     private final boolean isInverted;
+    private final int controlSystem;
 
-    public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier adjustValueGetter) {
-        this(driveTrain, moveValueGetter, rotateValueGetter, adjustValueGetter, false);    
-    }
+    // public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier adjustValueGetter) {
+    //     this(driveTrain, moveValueGetter, rotateValueGetter, adjustValueGetter, false);    
+    // }
 
-    public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier adjustValueGetter, final boolean isInverted) {
+    public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier adjustValueGetter, final boolean isInverted, final int controlSystem) {
         this.driveTrain = driveTrain;
         this.moveValueGetter = moveValueGetter;
         this.rotateValueGetter = rotateValueGetter;
         this.adjustValueGetter = adjustValueGetter;
         this.isInverted = isInverted;
+        this.controlSystem = controlSystem;
         addRequirements(driveTrain);
     }
 
     @Override
     public void execute() {
-        this.driveTrain.cheesyDrive(-this.moveValueGetter.getAsDouble() * (isInverted ? -1 : 1), this.rotateValueGetter.getAsDouble(), this.adjustValueGetter.getAsDouble());
+        this.driveTrain.cheesyDrive(-this.moveValueGetter.getAsDouble() * (isInverted ? -1 : 1), this.rotateValueGetter.getAsDouble(), this.adjustValueGetter.getAsDouble(), this.controlSystem);
     }
 
 }

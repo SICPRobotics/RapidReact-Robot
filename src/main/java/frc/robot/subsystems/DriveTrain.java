@@ -56,6 +56,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         rearLeft.configFactoryDefault();
         odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
         chassisSpeeds = new ChassisSpeeds(0,0,0);
+        this.robotDrive.setSafetyEnabled(false);
         //reset();
     }
     public void setMotor(double value) {
@@ -75,7 +76,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
      * @param scaleValue the amount that everything should be scaled by (usually given by the
      * little flap thing on the bottom of the joystick, Joystick rawAxis 3)
      */
-    public void cheesyDrive(final double moveValue, final double rotateValue, final double adjustValue) {
+    public void cheesyDrive(final double moveValue, final double rotateValue, final double adjustValue, final int ControlSystem) {
         final double actualAdjustValue = ((-adjustValue + 1) / 2);
         final double movevalue = Math.abs(moveValue) < Constants.CheesyDrive.Y_AXIS_DEADZONE_RANGE
                 ? 0
@@ -87,7 +88,21 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
                 ? 0
                 : rotateValue * actualAdjustValue;
         //this.robotDrive.tankDrive(moveValue, rotateValue);
-        this.robotDrive.arcadeDrive(movevalue, turnvalue, true);
+
+
+        if(ControlSystem == Constants.DriveTrain.ControlSystems.ARCADE_DRIVE_STANDARD){
+            this.robotDrive.arcadeDrive(movevalue, turnvalue, true);
+        }
+        else if(ControlSystem == Constants.DriveTrain.ControlSystems.TANK_DRIVE_TEST){
+            this.robotDrive.tankDrive(moveValue, rotateValue);
+        }
+        else if (ControlSystem == Constants.DriveTrain.ControlSystems.TANK_DRIVE_WITH_VOLTS){
+            this.voltDrive(12 * ((moveValue + rotateValue) * adjustValue), 12 * ((moveValue - rotateValue) * adjustValue));
+        }
+        
+        
+        
+        
         //this.robotDrive.tankDrive((moveValue + rotateValue) * adjustValue, (moveValue - rotateValue) * adjustValue);
     }
     public BiConsumer<Double, Double> tankDriveVolts = (leftVolts, rightVolts) -> {
@@ -122,11 +137,31 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         SmartDashboard.putNumber("Front Left Motor Position", getLeftDistanceMeters());
         SmartDashboard.putNumber("Front Right Motor Velocity", getRightVelocityMeters());
         SmartDashboard.putNumber("Front Left Motor Velocity", getLeftVelocityMeters());
+        SmartDashboard.putNumber("Front Right Motor Position Raw", frontRight.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Front Left Motor Position Raw", frontLeft.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Front Right Motor Velocity Raw", frontRight.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Front Left Motor Velocity Raw", frontLeft.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Encoder Difference: Right - Left", getRightDistanceMeters() - getLeftDistanceMeters());
+        SmartDashboard.putNumber("Encoder Difference Raw: Right - Left", frontRight.getSelectedSensorPosition() - frontLeft.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Right Side Volts", 0);
+        SmartDashboard.putNumber("Front Left Side Volts", this.frontLeft.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Front Right Side Volts", this.frontRight.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Rear Left Side Volts", this.rearLeft.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Rear Right Side Volts", this.rearRight.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Left Side Volt Difference", this.frontLeft.getMotorOutputVoltage() - this.rearLeft.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Right Side Volt Difference", this.frontRight.getMotorOutputVoltage() - this.rearRight.getMotorOutputVoltage());
         //System.out.println(this.getLeftDistanceMeters());
+
         //System.out.println(odometry.getPoseMeters().getTranslation().getX());
         //System.out.println(getRadians());
         //System.out.println(this.getPose().toString());
     }
+    // public double getVoltsToRight(){
+    //     return SmartDashboard.getNumber("Right Side Volts", 0);
+    // }
+    // public double getVoltsToLeft(){
+    //     return SmartDashboard.getNumber("Left Side Volts", 0);
+    // }
     public double getRightDistanceMeters(){
         return ((double)(frontRight.getSelectedSensorPosition()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * WillowMath.diameterToCircumfrance(Units.inchesToMeters(Constants.DriveTrain.WHEEL_Diameter_INCHES));
     }
