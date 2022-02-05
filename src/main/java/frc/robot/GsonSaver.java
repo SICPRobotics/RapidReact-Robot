@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Path;
+import java.util.Map;
+
+import javax.swing.text.StyledEditorKit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,32 +19,37 @@ public class GsonSaver {
     public static final String TRAJECTORY_CONFIG_PATH = "/robot/Jsons/TrajectoryConfigs/";
     public static final String OTHER_PATH = "/robot/Jsons/Other/";
     private static Gson gson;
+    Map<String, String> env = System.getenv();
 
     public GsonSaver(){
-        gson = new Gson();
-        
+        gson = new GsonBuilder()
+                    .generateNonExecutableJson()
+                    .serializeNulls()
+                    .setPrettyPrinting()    
+                    .create();
     }
-    public static void setBuild(GsonBuilder builder){
+    public void setBuild(GsonBuilder builder){
         gson = builder.create();
     }
-    public static void saveObject(Object save, String filePath, String fileName){
+    public void saveObject(Object save, String filePath, String fileName){
         
         try {
             File file = new File("test.json");
+            file.mkdirs();
             file.createNewFile();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             System.out.println("DID NOT CREATE");
             e1.printStackTrace();
         }
-        try (FileWriter writer = new FileWriter("test.json")) {
+        try (FileWriter writer = new FileWriter(this.env.get("HOME") + "/test.json")) {
             gson.toJson(save, writer);
         } catch (IOException e) {
             System.out.println("DID NOT SAVE");
             e.printStackTrace();
         }
     }
-    public static <T> T getObject(Class<T> classOfT, String filePath, String fileName){
+    public <T> T getObject(Class<T> classOfT, String filePath, String fileName){
     
         try (Reader reader = new FileReader(filePath + fileName + ".json")) {
 

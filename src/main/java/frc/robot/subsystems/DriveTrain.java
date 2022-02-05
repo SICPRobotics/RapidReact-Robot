@@ -57,6 +57,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
         chassisSpeeds = new ChassisSpeeds(0,0,0);
         this.robotDrive.setSafetyEnabled(false);
+        frontLeft.neutralOutput();
         //reset();
     }
     public void setMotor(double value) {

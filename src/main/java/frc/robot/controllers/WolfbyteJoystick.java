@@ -1,5 +1,7 @@
 package frc.robot.controllers;
 
+import java.util.function.DoubleConsumer;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -7,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.SignedCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.PistonSubsystem;
@@ -53,6 +56,18 @@ public class WolfbyteJoystick extends Joystick{
             joystickButtons[button - 1].toggleWhenPressed(new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, isInverted, controlSystem));
         }
     }
+    public void setDoubleButtonCommand(Subsystem subsystem, int button1, int button2, SignedCommand command, boolean toggle){
+        this.setButtonCommand(subsystem, button1, command, toggle);
+        this.setButtonCommand(subsystem, button2, command.changeSign(), toggle);
+    }
+    // public void setSimpleButtonCommand(Subsystem subsystem, int button, DoubleConsumer method, boolean toggle){
+    //     if(toggle){
+    //         joystickButtons[button - 1].toggleWhenPressed(new FunctionalCommand(() -> motorSubsystem.turnOn(velocity), () -> {}, (b) -> motorSubsystem.turnOff(), () -> false, motorSubsystem));
+    //     }
+    //     else{
+    //         joystickButtons[button - 1].whileHeld(command);
+    //     }
+    // }
     public double getJoystickX() {
         return this.getRawAxis(Constants.Joystick.X_AXIS);
     }

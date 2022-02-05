@@ -19,14 +19,18 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 public class TrajectoryGeneration {
 
+    private GsonSaver gsonSaver;
+
     public TrajectoryGeneration(){}
     
     public void generate(Pose2d start, List<Translation2d> waypoints, Pose2d end, TrajectoryConfig config, String name){
-        GsonSaver.saveObject(TrajectoryGenerator.generateTrajectory(start, waypoints, end, config), GsonSaver.TRAJECTORY_PATH, name);
-        
+        gsonSaver.saveObject(TrajectoryGenerator.generateTrajectory(start, waypoints, end, config), GsonSaver.TRAJECTORY_PATH, name);
+    }
+    public void addGson(GsonSaver gsonSaver){
+        this.gsonSaver = gsonSaver;
     }
     public Trajectory getTrajectory(String name){
-        return GsonSaver.getObject(Trajectory.class, GsonSaver.TRAJECTORY_PATH, name);
+        return gsonSaver.getObject(Trajectory.class, GsonSaver.TRAJECTORY_PATH, name);
     } 
     public Command getTrajectoryCommand(DriveTrain driveTrain, String trajectoryName){
         return new RamseteCommand(this.getTrajectory(trajectoryName), 
