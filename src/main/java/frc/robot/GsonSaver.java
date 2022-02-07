@@ -14,12 +14,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GsonSaver {
-    public static final Path TEST = Path.of("test.json");
+    public final Path TEST = Path.of("test.json");
     public static final String TRAJECTORY_PATH = "/Jsons/Trajectories/";
     public static final String TRAJECTORY_CONFIG_PATH = "/robot/Jsons/TrajectoryConfigs/";
     public static final String OTHER_PATH = "/robot/Jsons/Other/";
-    private static Gson gson;
-    Map<String, String> env = System.getenv();
+    private Gson gson;
+    private Map<String, String> env = System.getenv();
 
     public GsonSaver(){
         gson = new GsonBuilder()
