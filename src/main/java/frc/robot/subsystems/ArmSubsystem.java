@@ -30,6 +30,10 @@ public class ArmSubsystem extends SubsystemBaseWrapper{
         elbow.setNeutralMode(NeutralMode.Brake);
         wrist.setNeutralMode(NeutralMode.Brake);
     }
+
+    
+
+
     public void twist(double velocity){
         shoulderTwist.set(velocity);
     }
