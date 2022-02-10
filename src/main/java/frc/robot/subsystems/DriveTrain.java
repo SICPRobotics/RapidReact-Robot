@@ -144,7 +144,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         SmartDashboard.putNumber("Front Left Motor Velocity Raw", frontLeft.getSelectedSensorVelocity());
         SmartDashboard.putNumber("Encoder Difference: Right - Left", getRightDistanceMeters() - getLeftDistanceMeters());
         SmartDashboard.putNumber("Encoder Difference Raw: Right - Left", frontRight.getSelectedSensorPosition() - frontLeft.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Right Side Volts", 0);
+        //SmartDashboard.putNumber("Right Side Volts", 0);
         SmartDashboard.putNumber("Front Left Side Volts", this.frontLeft.getMotorOutputVoltage());
         SmartDashboard.putNumber("Front Right Side Volts", this.frontRight.getMotorOutputVoltage());
         SmartDashboard.putNumber("Rear Left Side Volts", this.rearLeft.getMotorOutputVoltage());

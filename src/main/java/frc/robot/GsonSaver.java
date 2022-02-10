@@ -14,12 +14,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GsonSaver {
-    public final Path TEST = Path.of("test.json");
+    //private static final Path = Filesystem.get blab lablalsi
     public static final String TRAJECTORY_PATH = "/Jsons/Trajectories/";
     public static final String TRAJECTORY_CONFIG_PATH = "/robot/Jsons/TrajectoryConfigs/";
     public static final String OTHER_PATH = "/robot/Jsons/Other/";
     private Gson gson;
     private Map<String, String> env = System.getenv();
+    
 
     public GsonSaver(){
         gson = new GsonBuilder()
@@ -32,11 +33,16 @@ public class GsonSaver {
         gson = builder.create();
     }
     public void saveObject(Object save, String filePath, String fileName){
+
         
         try {
-            File file = new File("test.json");
+            System.out.println("poob");
+            File file = new File("test");
+            System.out.println("boop");
             file.mkdirs();
             file.createNewFile();
+            File file2 = new File("test.json");
+            file2.createNewFile();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             System.out.println("DID NOT CREATE");

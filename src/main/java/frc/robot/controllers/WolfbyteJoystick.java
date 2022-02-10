@@ -16,13 +16,13 @@ import frc.robot.subsystems.PistonSubsystem;
 
 public class WolfbyteJoystick extends Joystick{
 
-    public final WolfbyteButton[] wolfbyteButtons  = new WolfbyteButton[12];
+    public final WolfbyteButton[] wolfbyteButtons  = new WolfbyteButton[13];
     public static final boolean TOGGLE_BUTTON = true;
     public static final boolean HELD_BUTTON = false;
 
     public WolfbyteJoystick(int port) {
         super(port);
-        for(int i = 0; i < 12; i++){
+        for(int i = 0; i < 13; i++){
             wolfbyteButtons[i] = new WolfbyteButton(this, i + 1);
         }
     }
