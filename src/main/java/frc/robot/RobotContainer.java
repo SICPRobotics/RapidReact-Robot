@@ -69,11 +69,11 @@ public final class RobotContainer {
             new FunctionalCommand(() -> arm.twist(joystick.getJoystickZ() * 0.5), () -> {}, (b) -> {}, () -> false, arm)
         );*/
 
-        arm.setDefaultCommand(new FunctionalCommand(() -> {}, () -> {
-            arm.claw(controller.triggers.right.get() - controller.triggers.left.get());
-            arm.elbow(controller.sticks.right.getY());
-            arm.shoulder(controller.sticks.left.getY());
-        }, b -> {}, () -> false, arm));
+        // arm.setDefaultCommand(new FunctionalCommand(() -> {}, () -> {
+        //     arm.claw(controller.triggers.right.get() - controller.triggers.left.get());
+        //     arm.elbow(controller.sticks.right.getY());
+        //     arm.shoulder(controller.sticks.left.getY());
+        // }, b -> {}, () -> false, arm));
         // Configure the button bindings
         configureButtonBindings();
         //SmartDashboard.putNumber("Auton Chooser", 0);
@@ -92,15 +92,15 @@ public final class RobotContainer {
     private void configureButtonBindings() {
     //    joystick.wolfbyteButtons[6].setButtonCommand(arm, new FunctionalCommand(() -> arm.claw(0.1), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
     //    joystick.wolfbyteButtons[4].setButtonCommand(arm, new FunctionalCommand(() -> arm.claw(-0.1), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[1].setButtonCommand(climber, new FunctionalCommand(() -> climber.lock(0), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[7].setButtonCommand(climber, new FunctionalCommand(() -> climber.lock(1), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
+       joystick.wolfbyteButtons[8].setButtonCommand(climber, new FunctionalCommand(() -> climber.lock(0), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
+       joystick.wolfbyteButtons[7].setButtonCommand(climber, new FunctionalCommand(() -> climber.lock(0.5), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
        joystick.wolfbyteButtons[5].setDoubleButtonSignedCommand(arm, joystick.wolfbyteButtons[3], new ArmHoldY(arm, 1), WolfbyteJoystick.HELD_BUTTON);
        joystick.wolfbyteButtons[11].setDoubleButtonMotorCommand(climber, joystick.wolfbyteButtons[12], 0.5, WolfbyteJoystick.HELD_BUTTON);
        joystick.wolfbyteButtons[10].setButtonMotorCommand(driveTrain, 1, WolfbyteJoystick.HELD_BUTTON);
        joystick.wolfbyteButtons[9].setButtonCommand(driveTrain, new FunctionalCommand(() -> driveTrain.reset(), () -> {}, (b) -> {}, () -> false, driveTrain), WolfbyteJoystick.HELD_BUTTON);
        
        
-       joystick.setDriveTrainCommandButton(driveTrain, 8, Constants.DriveTrain.ControlSystems.TANK_DRIVE_WITH_VOLTS, false, WolfbyteJoystick.TOGGLE_BUTTON);
+       joystick.setDriveTrainCommandButton(driveTrain, 1, Constants.DriveTrain.ControlSystems.TANK_DRIVE_WITH_VOLTS, false, WolfbyteJoystick.TOGGLE_BUTTON);
        joystick.setDriveTrainCommandButton(driveTrain, 2, Constants.DriveTrain.ControlSystems.ARCADE_DRIVE_STANDARD, false, WolfbyteJoystick.TOGGLE_BUTTON);
     
     }

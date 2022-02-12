@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Path;
 import java.util.Map;
+import edu.wpi.first.wpilibj.Filesystem;
 
 import javax.swing.text.StyledEditorKit;
 
@@ -19,10 +20,11 @@ public class GsonSaver {
     public static final String TRAJECTORY_CONFIG_PATH = "/robot/Jsons/TrajectoryConfigs/";
     public static final String OTHER_PATH = "/robot/Jsons/Other/";
     private Gson gson;
-    private Map<String, String> env = System.getenv();
+    private String directory = Filesystem.getDeployDirectory().toPath().toString();
     
 
     public GsonSaver(){
+    
         gson = new GsonBuilder()
                     .generateNonExecutableJson()
                     .serializeNulls()
