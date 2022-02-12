@@ -26,19 +26,12 @@ public class WolfbyteJoystick extends Joystick{
         }
     }
 
-    public void setDriveTrainCommandButton(DriveTrain driveTrain, int button, int controlSystem, boolean isInverted, boolean toggle){
-        if(toggle){
-            wolfbyteButtons[button - 1].toggleWhenPressed(new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, isInverted, controlSystem));
-        }
-    }
-    // public void setSimpleButtonCommand(Subsystem subsystem, int button, DoubleConsumer method, boolean toggle){
+    // public void setDriveTrainCommandButton(DriveTrain driveTrain, int button, int controlSystem, boolean isInverted, boolean toggle){
     //     if(toggle){
-    //         joystickButtons[button - 1].toggleWhenPressed(new FunctionalCommand(() -> motorSubsystem.turnOn(velocity), () -> {}, (b) -> motorSubsystem.turnOff(), () -> false, motorSubsystem));
-    //     }
-    //     else{
-    //         joystickButtons[button - 1].whileHeld(command);
+    //         wolfbyteButtons[button - 1].toggleWhenPressed(new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, isInverted, controlSystem));
     //     }
     // }
+    
     public double getJoystickX() {
         return this.getRawAxis(Constants.Joystick.X_AXIS);
     }
@@ -49,7 +42,7 @@ public class WolfbyteJoystick extends Joystick{
         return this.getRawAxis(Constants.Joystick.Z_AXIS);
     }
     public double getJoystickAdjust() {
-        return this.getRawAxis(Constants.Joystick.ADJUST_AXIS);
+        return this.getRawAxis(Constants.Joystick.SCALE_AXIS);
     }
     
 }

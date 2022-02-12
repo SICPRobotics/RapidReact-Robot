@@ -45,7 +45,7 @@ import frc.robot.subsystems.MotorSubsystem;
  */
 public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final WolfbyteJoystick joystick;
+    private final Joystick joystick;
     private final DriveTrain driveTrain;
     private final ClimbSubsystem climber;
     private final ArmSubsystem arm;
@@ -58,7 +58,7 @@ public final class RobotContainer {
      */
     public RobotContainer() {
         driveTrain = new DriveTrain();
-        joystick = new WolfbyteJoystick(0);
+        joystick = new Joystick(0);
         climber = new ClimbSubsystem();
         gsonSaver = new GsonSaver();
         arm = new ArmSubsystem();

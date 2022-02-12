@@ -2,6 +2,7 @@ package frc.robot.controllers.operator;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.controllers.WolfbyteButton;
 
 public class Buttons {
     public final Button A;         
