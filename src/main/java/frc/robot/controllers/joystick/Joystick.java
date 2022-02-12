@@ -38,6 +38,6 @@ public class Joystick {
     }
 
     public double getScale() {
-        return this.joystick.getRawAxis(Constants.Joystick.SCALE_AXIS);
+        return ((-this.joystick.getRawAxis(Constants.Joystick.SCALE_AXIS) + 1) / 2);
     }
 }
