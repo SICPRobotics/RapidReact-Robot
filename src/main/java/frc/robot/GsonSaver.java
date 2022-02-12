@@ -43,17 +43,20 @@ public class GsonSaver {
     }
     public void saveObject(Object save, String filePath, String fileName){
 
-        File file = new File(this.directory + "test.json");
+        File file = new File(this.directory + "/test.json");
+        file.setExecutable(true, false);
+        file.setReadable(true, false);
+        file.setWritable(true, false);
         try {   
         file.createNewFile();
-        
-        } catch (IOException e1) {
+        } 
+        catch (IOException e1) {
             // TODO Auto-generated catch block
             System.out.println("DID NOT CREATE");
             e1.printStackTrace();
         }
         System.out.println(file.exists() + "WOOOOT");
-        try (FileWriter writer = new FileWriter(this.directory + "test.json")) {
+        try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(save, writer);
         } catch (IOException e) {
             System.out.println("DID NOT SAVE");
@@ -62,7 +65,7 @@ public class GsonSaver {
     }
     public <T> T getObject(Class<T> classOfT, String filePath, String fileName){
     
-        try (Reader reader = new FileReader(this.directory + "test.json")) {
+        try (Reader reader = new FileReader(this.directory + "/test.json")) {
 
             // Convert JSON File to Java Object
             return gson.fromJson(reader, classOfT);

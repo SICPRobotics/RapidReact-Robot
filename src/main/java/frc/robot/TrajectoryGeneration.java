@@ -33,6 +33,7 @@ public class TrajectoryGeneration {
         return gsonSaver.getObject(Trajectory.class, GsonSaver.TRAJECTORY_PATH, name);
     } 
     public Command getTrajectoryCommand(DriveTrain driveTrain, String trajectoryName){
+        System.out.println(this.getTrajectory(trajectoryName).getStates());
         return new RamseteCommand(this.getTrajectory(trajectoryName), 
             driveTrain::getPose,
              new RamseteController(),
