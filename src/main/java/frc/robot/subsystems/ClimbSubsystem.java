@@ -10,7 +10,7 @@ import frc.robot.Constants;
 public class ClimbSubsystem implements MotorSubsystem{
     
     WPI_TalonSRX climbMotor;
-    Servo lock;
+    public Servo lock;
 
     public ClimbSubsystem(){
         climbMotor = new WPI_TalonSRX(Constants.Climber.CLIMBER_MOTOR_ID);
@@ -29,5 +29,9 @@ public class ClimbSubsystem implements MotorSubsystem{
     }
     public void lock(double position){
         this.lock.set(position);
+    }
+
+    public void setRachetServoVelocity(double velocity) {
+        lock.setSpeed(velocity);
     }
 }

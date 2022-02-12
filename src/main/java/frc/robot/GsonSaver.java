@@ -50,12 +50,12 @@ public class GsonSaver {
             System.out.println("DID NOT CREATE");
             e1.printStackTrace();
         }
-        try (FileWriter writer = new FileWriter(this.env.get("HOME") + "/test.json")) {
+        /*try (FileWriter writer = new FileWriter(this.env.get("HOME") + "/test.json")) {
             gson.toJson(save, writer);
         } catch (IOException e) {
             System.out.println("DID NOT SAVE");
             e.printStackTrace();
-        }
+        }*/
     }
     public <T> T getObject(Class<T> classOfT, String filePath, String fileName){
     
