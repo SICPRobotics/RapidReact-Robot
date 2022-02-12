@@ -1,9 +1,9 @@
-package frc.robot.controllers;
+package frc.robot.controllers.operator;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.controllers.buttons.DPadButton;
-import frc.robot.controllers.buttons.DPadButton.Direction;
+import frc.robot.controllers.operator.buttons.DPadButton;
+import frc.robot.controllers.operator.buttons.DPadButton.Direction;
 
 public class DPad {
     public final Button up;
