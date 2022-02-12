@@ -8,7 +8,7 @@ import java.io.Reader;
 import java.nio.file.Path;
 import java.util.Map;
 import edu.wpi.first.wpilibj.Filesystem;
-
+import java.lang.SecurityManager;
 import javax.swing.text.StyledEditorKit;
 
 import com.google.gson.Gson;
@@ -20,11 +20,18 @@ public class GsonSaver {
     public static final String TRAJECTORY_CONFIG_PATH = "/robot/Jsons/TrajectoryConfigs/";
     public static final String OTHER_PATH = "/robot/Jsons/Other/";
     private Gson gson;
-    private String directory = Filesystem.getDeployDirectory().toPath().toString();
-    
+    private String directory;
 
-    public GsonSaver(){
+    public GsonSaver(){ 
+        Filesystem.getDeployDirectory().mkdir();
+        directory = Filesystem.getDeployDirectory().toPath().toString();
     
+        // Filesystem.getDeployDirectory().setExecutable(true, false);
+        // Filesystem.getDeployDirectory().setReadable(true, false);
+        // Filesystem.getDeployDirectory().setWritable(true, false);
+        
+        System.out.println(Filesystem.getDeployDirectory().canWrite() + ", " + Filesystem.getDeployDirectory().canRead() + ", " + Filesystem.getDeployDirectory().canExecute());
+        
         gson = new GsonBuilder()
                     .generateNonExecutableJson()
                     .serializeNulls()
@@ -36,21 +43,17 @@ public class GsonSaver {
     }
     public void saveObject(Object save, String filePath, String fileName){
 
+        File file = new File(this.directory + "test.json");
+        try {   
+        file.createNewFile();
         
-        try {
-            System.out.println("poob");
-            File file = new File("test");
-            System.out.println("boop");
-            file.mkdirs();
-            file.createNewFile();
-            File file2 = new File("test.json");
-            file2.createNewFile();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             System.out.println("DID NOT CREATE");
             e1.printStackTrace();
         }
-        try (FileWriter writer = new FileWriter(this.env.get("HOME") + "/test.json")) {
+        System.out.println(file.exists() + "WOOOOT");
+        try (FileWriter writer = new FileWriter(this.directory + "test.json")) {
             gson.toJson(save, writer);
         } catch (IOException e) {
             System.out.println("DID NOT SAVE");
