@@ -1,4 +1,4 @@
-package frc.robot.controllers;
+package frc.robot.controllers.operator;
 
 import java.util.function.DoubleSupplier;
 

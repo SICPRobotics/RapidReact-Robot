@@ -17,11 +17,11 @@ public final class DriveWithJoystick extends CommandBase {
     //     this(driveTrain, moveValueGetter, rotateValueGetter, adjustValueGetter, false);    
     // }
 
-    public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier adjustValueGetter, final boolean isInverted, final int controlSystem) {
+    public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier scaleValueGetter, final boolean isInverted) {
         this.driveTrain = driveTrain;
         this.moveValueGetter = moveValueGetter;
         this.rotateValueGetter = rotateValueGetter;
-        this.adjustValueGetter = adjustValueGetter;
+        this.adjustValueGetter = scaleValueGetter;
         this.isInverted = isInverted;
         this.controlSystem = controlSystem;
         addRequirements(driveTrain);
@@ -29,7 +29,7 @@ public final class DriveWithJoystick extends CommandBase {
 
     @Override
     public void execute() {
-        this.driveTrain.cheesyDrive(-this.moveValueGetter.getAsDouble() * (isInverted ? -1 : 1), this.rotateValueGetter.getAsDouble(), this.adjustValueGetter.getAsDouble(), this.controlSystem);
+        this.driveTrain.cheesyDrive(-this.moveValueGetter.getAsDouble() * (isInverted ? -1 : 1) * this.adjustValueGetter.getAsDouble(), this.rotateValueGetter.getAsDouble());
     }
 
 }

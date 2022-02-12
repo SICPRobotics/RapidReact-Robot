@@ -16,7 +16,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 //simport edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,11 +28,12 @@ import frc.robot.Constants.Climber;
 import frc.robot.commands.ArmHoldY;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.NudgeServo;
-import frc.robot.controllers.OperatorController;
+import frc.robot.controllers.operator.OperatorController;
 import frc.robot.controllers.WolfbyteButton;
 import frc.robot.controllers.WolfbyteJoystick;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.controllers.joystick.Joystick;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 /**
@@ -64,17 +64,8 @@ public final class RobotContainer {
         arm = new ArmSubsystem();
         trajectoryGeneration.addGson(gsonSaver);
         driveTrain.setDefaultCommand(
-            new DriveWithJoystick(driveTrain, this::getJoystickY, this::getJoystickX, this::getJoystickAdjust, true, Constants.DriveTrain.ControlSystems.ARCADE_DRIVE_STANDARD));
-        
-            /*arm.setDefaultCommand(
-            new FunctionalCommand(() -> arm.twist(joystick.getJoystickZ() * 0.5), () -> {}, (b) -> {}, () -> false, arm)
-        );*/
+            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
 
-        // arm.setDefaultCommand(new FunctionalCommand(() -> {}, () -> {
-        //     arm.claw(controller.triggers.right.get() - controller.triggers.left.get());
-        //     arm.elbow(controller.sticks.right.getY());
-        //     arm.shoulder(controller.sticks.left.getY());
-        // }, b -> {}, () -> false, arm));
         // Configure the button bindings
         configureButtonBindings();
         //SmartDashboard.putNumber("Auton Chooser", 0);
@@ -91,41 +82,19 @@ public final class RobotContainer {
      * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-    //    joystick.wolfbyteButtons[6].setButtonCommand(arm, new FunctionalCommand(() -> arm.claw(0.1), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
-    //    joystick.wolfbyteButtons[4].setButtonCommand(arm, new FunctionalCommand(() -> arm.claw(-0.1), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[8].setButtonCommand(climber, new NudgeServo(climber, climber.lock, 0.05), WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[7].setButtonCommand(climber, new NudgeServo(climber, climber.lock, -0.05), WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[5].setDoubleButtonSignedCommand(arm, joystick.wolfbyteButtons[3], new ArmHoldY(arm, 1), WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[11].setDoubleButtonMotorCommand(climber, joystick.wolfbyteButtons[12], 0.5, WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[10].setButtonMotorCommand(driveTrain, 1, WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[9].setButtonCommand(driveTrain, new FunctionalCommand(() -> driveTrain.reset(), () -> {}, (b) -> {}, () -> false, driveTrain), WolfbyteJoystick.HELD_BUTTON);
-       
-       
-       joystick.setDriveTrainCommandButton(driveTrain, 1, Constants.DriveTrain.ControlSystems.TANK_DRIVE_WITH_VOLTS, false, WolfbyteJoystick.TOGGLE_BUTTON);
-       joystick.setDriveTrainCommandButton(driveTrain, 2, Constants.DriveTrain.ControlSystems.ARCADE_DRIVE_STANDARD, false, WolfbyteJoystick.TOGGLE_BUTTON);
-    
+        joystick.thumb.toggleWhenPressed(
+            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, true));
     }
     
-    // public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
-    //     if(toggle){
-    //         jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
-    //     }
-    //     else{
-    //         jB.whileHeld(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
-    //     }
-    // }   
-    public double getJoystickX() {
-        return this.joystick.getRawAxis(Constants.Joystick.X_AXIS);
+    public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
+        if(toggle){
+            jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
+        }
+        else{
+            jB.whileHeld(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
+        }
     }
-    public double getJoystickY() {
-        return -this.joystick.getRawAxis(Constants.Joystick.Y_AXIS);
-    }
-    public double getJoystickZ() {
-        return this.joystick.getRawAxis(Constants.Joystick.Z_AXIS);
-    }
-    public double getJoystickAdjust() {
-        return this.joystick.getRawAxis(Constants.Joystick.ADJUST_AXIS);
-    }
+
     // public void trajectory(TrajectoryGeneration trajectoryGeneration, DriveTrain driveTrain, Pose2d ){
     //   trajectoryGeneration = new TrajectoryGeneration(driveTrain.getPose(),
     //         new Pose2d(new Translation2d(0, 2), new Rotation2d(Math.PI/2)), 

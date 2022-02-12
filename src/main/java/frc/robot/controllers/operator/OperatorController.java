@@ -1,4 +1,4 @@
-package frc.robot.controllers;
+package frc.robot.controllers.operator;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
