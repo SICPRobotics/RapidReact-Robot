@@ -62,7 +62,7 @@ public class GsonSaver {
     }
     public <T> T getObject(Class<T> classOfT, String filePath, String fileName){
     
-        try (Reader reader = new FileReader(filePath + fileName + ".json")) {
+        try (Reader reader = new FileReader(this.directory + "test.json")) {
 
             // Convert JSON File to Java Object
             return gson.fromJson(reader, classOfT);

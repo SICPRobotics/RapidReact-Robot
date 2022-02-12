@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Constants.Climber;
 import frc.robot.commands.ArmHoldY;
 import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.NudgeServo;
 import frc.robot.controllers.OperatorController;
 import frc.robot.controllers.WolfbyteButton;
 import frc.robot.controllers.WolfbyteJoystick;
@@ -92,8 +93,8 @@ public final class RobotContainer {
     private void configureButtonBindings() {
     //    joystick.wolfbyteButtons[6].setButtonCommand(arm, new FunctionalCommand(() -> arm.claw(0.1), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
     //    joystick.wolfbyteButtons[4].setButtonCommand(arm, new FunctionalCommand(() -> arm.claw(-0.1), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[8].setButtonCommand(climber, new FunctionalCommand(() -> climber.lock(0), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
-       joystick.wolfbyteButtons[7].setButtonCommand(climber, new FunctionalCommand(() -> climber.lock(0.5), () -> {}, (b) -> {}, () -> false, arm), WolfbyteJoystick.HELD_BUTTON);
+       joystick.wolfbyteButtons[8].setButtonCommand(climber, new NudgeServo(climber, climber.lock, 0.05), WolfbyteJoystick.HELD_BUTTON);
+       joystick.wolfbyteButtons[7].setButtonCommand(climber, new NudgeServo(climber, climber.lock, -0.05), WolfbyteJoystick.HELD_BUTTON);
        joystick.wolfbyteButtons[5].setDoubleButtonSignedCommand(arm, joystick.wolfbyteButtons[3], new ArmHoldY(arm, 1), WolfbyteJoystick.HELD_BUTTON);
        joystick.wolfbyteButtons[11].setDoubleButtonMotorCommand(climber, joystick.wolfbyteButtons[12], 0.5, WolfbyteJoystick.HELD_BUTTON);
        joystick.wolfbyteButtons[10].setButtonMotorCommand(driveTrain, 1, WolfbyteJoystick.HELD_BUTTON);
