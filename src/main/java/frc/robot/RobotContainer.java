@@ -70,7 +70,16 @@ public final class RobotContainer {
         trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
             new Translation2d(2,1),
             new Translation2d(5, -1)
-        ), new Pose2d(new Translation2d(7,0), new Rotation2d(0)), new TrajectoryConfig(4, 2), "test");
+        ), 
+        new Pose2d(new Translation2d(7,0), new Rotation2d(0)), 
+        new TrajectoryConfig(4, 2), "test");
+        trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
+            new Translation2d(1,2),
+            new Translation2d(3, 3)
+        ), 
+        new Pose2d(new Translation2d(7,0), new Rotation2d(0)),
+         new TrajectoryConfig(4, 2), "nottest");
+        
     }
 
     /**
@@ -100,7 +109,7 @@ public final class RobotContainer {
     // }
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
-        return trajectoryGeneration.getTrajectoryCommand(driveTrain, "test");
+        return trajectoryGeneration.getTrajectoryCommand(driveTrain, "nottest");
     }
     
 }

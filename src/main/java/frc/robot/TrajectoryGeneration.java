@@ -24,15 +24,16 @@ public class TrajectoryGeneration {
     public TrajectoryGeneration(){}
     
     public void generate(Pose2d start, List<Translation2d> waypoints, Pose2d end, TrajectoryConfig config, String name){
-        gsonSaver.saveObject(TrajectoryGenerator.generateTrajectory(start, waypoints, end, config), GsonSaver.TRAJECTORY_PATH, name);
+        gsonSaver.saveObject(TrajectoryGenerator.generateTrajectory(start, waypoints, end, config), name);
     }
     public void addGson(GsonSaver gsonSaver){
         this.gsonSaver = gsonSaver;
     }
     public Trajectory getTrajectory(String name){
-        return gsonSaver.getObject(Trajectory.class, GsonSaver.TRAJECTORY_PATH, name);
+        return gsonSaver.getObject(Trajectory.class, name);
     } 
     public Command getTrajectoryCommand(DriveTrain driveTrain, String trajectoryName){
+        System.out.println(trajectoryName);
         System.out.println(this.getTrajectory(trajectoryName).getStates());
         return new RamseteCommand(this.getTrajectory(trajectoryName), 
             driveTrain::getPose,
