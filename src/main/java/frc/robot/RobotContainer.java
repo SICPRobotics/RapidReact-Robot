@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.controllers.joystick.Joystick;
+import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 /**
@@ -30,6 +32,7 @@ public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final Joystick joystick = new Joystick(0);
     private final DriveTrain driveTrain;
+    private final CargoArm cargoArm = new CargoArm();
 
 
     /**
@@ -56,6 +59,9 @@ public final class RobotContainer {
     private void configureButtonBindings() {
         joystick.thumb.toggleWhenPressed(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
+
+        joystick.button(5).whileHeld(new ArmCommand(cargoArm, .5));
+        joystick.button(6).whileHeld(new ArmCommand(cargoArm, -.5));
     }
     
     public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
