@@ -6,17 +6,20 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 //simport edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.controllers.joystick.Joystick;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 /**
@@ -30,6 +33,7 @@ public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final Joystick joystick = new Joystick(0);
     private final DriveTrain driveTrain;
+    private final Climber climber = new Climber();
 
 
     /**
@@ -56,6 +60,9 @@ public final class RobotContainer {
     private void configureButtonBindings() {
         joystick.thumb.toggleWhenPressed(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
+
+        joystick.button(7).whileHeld(new FunctionalCommand(() -> {}, () -> climber.setRatchetServoPosition(climber.getRatchetServoPosition() + 0.005), b -> {}, () -> false, climber));
+        joystick.button(8).whileHeld(new FunctionalCommand(() -> {}, () -> climber.setRatchetServoPosition(climber.getRatchetServoPosition() - 0.005), b -> {}, () -> false, climber));
     }
     
     public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
