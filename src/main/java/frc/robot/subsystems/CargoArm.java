@@ -1,12 +1,18 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.SubsystemBaseWrapper;
 
 public class CargoArm extends SubsystemBaseWrapper implements MotorSubsystem {
     private final CANSparkMax motor = new CANSparkMax(5, MotorType.kBrushless);
+    public CargoArm() {
+        super();
+        motor.setIdleMode(IdleMode.kBrake);
+    }
+
     public void turnOn (double velocity){
         motor.set(velocity);
     }
