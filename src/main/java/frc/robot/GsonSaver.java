@@ -46,6 +46,9 @@ public class GsonSaver {
     public void setBuild(GsonBuilder builder){
         gson = builder.create();
     }
+    public ArrayList<String> getNames() {
+        return names;
+    }
     public void saveObject(Object save, String fileName){
         if(this.names.contains(fileName)){
             System.err.println("FILE "+ fileName +" ALREADY EXISTS");

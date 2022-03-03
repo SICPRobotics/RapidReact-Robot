@@ -8,6 +8,7 @@
 package frc.robot;
 import java.util.List;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -30,10 +31,13 @@ import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.NudgeServo;
 import frc.robot.controllers.operator.OperatorController;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.MotorSubsystem;
+import frc.robot.subsystems.SimpleMotorSubsystem;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -50,6 +54,8 @@ public final class RobotContainer {
     private final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
     private final GsonSaver gsonSaver;
     private final OperatorController controller = new OperatorController(1);
+    private final CargoArm cargoArm;
+    private final Intake intake;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -60,6 +66,8 @@ public final class RobotContainer {
         climber = new ClimbSubsystem();
         gsonSaver = new GsonSaver();
         arm = new ArmSubsystem();
+        cargoArm = new CargoArm();
+        intake = new Intake();
         trajectoryGeneration.addGson(gsonSaver);
         driveTrain.setDefaultCommand(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
@@ -79,7 +87,7 @@ public final class RobotContainer {
         ), 
         new Pose2d(new Translation2d(7,0), new Rotation2d(0)),
          new TrajectoryConfig(4, 2), "nottest");
-        
+        trajectoryGeneration.printTrajectory("test");
     }
 
     /**
@@ -91,14 +99,18 @@ public final class RobotContainer {
     private void configureButtonBindings() {
         joystick.thumb.toggleWhenPressed(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, true));
+        motorSubsystemButton(this.controller.buttons.A, this.cargoArm, 0.4, false);
+        motorSubsystemButton(this.controller.buttons.B, this.cargoArm, -0.4, false);
+        motorSubsystemButton(this.controller.buttons.X, this.intake, 0.6, true);
+        motorSubsystemButton(this.controller.buttons.Y, this.intake, -0.6, true);
     }
     
     public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
         if(toggle){
-            jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
+            jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.setMotor(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
         }
         else{
-            jB.whileHeld(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
+            jB.whileHeld(new FunctionalCommand(() -> subsystem.setMotor(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
         }
     }
 
