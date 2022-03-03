@@ -40,5 +40,9 @@ public final class Constants {
         public static final int Y_AXIS = 1;
         public static final int SCALE_AXIS = 3;
     }
+    public final class Arm{
+        public static final int INTAKE_MOTOR_ID = 8;
+        public static final int ARM_MOTOR_ID = 5;
+    }
 
 }

@@ -2,20 +2,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import frc.robot.SubsystemBaseWrapper;
+import frc.robot.Constants;
 
-public class CargoIntake extends SubsystemBaseWrapper implements MotorSubsystem {
-    private final WPI_TalonSRX motor = new WPI_TalonSRX(8);
+public class CargoIntake extends SimpleMotorSubsystem{
 
-    public void setMotor(double velocity) {
-        motor.set(velocity);
-    }
+    WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.Arm.INTAKE_MOTOR_ID);
 
-    public void turnOn(double velocity) {
-        setMotor(velocity);
-    }
-
-    public void turnOff() {
-        motor.set(0);
+    public CargoIntake(){
+        super();
+        setMotorController(this.intakeMotor);
     }
 }

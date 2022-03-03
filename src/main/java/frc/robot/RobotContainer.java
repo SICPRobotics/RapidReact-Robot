@@ -78,10 +78,10 @@ public final class RobotContainer {
     
     public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
         if(toggle){
-            jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
+            jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.setMotor(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
         }
         else{
-            jB.whileHeld(new FunctionalCommand(() -> subsystem.turnOn(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
+            jB.whileHeld(new FunctionalCommand(() -> subsystem.setMotor(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
         }
     }
 
