@@ -13,7 +13,7 @@ public class MotorCommand extends CommandBase{
     
     @Override
     public void initialize() {
-        this.motorSubsystem.turnOn(velocity);
+        this.motorSubsystem.setMotor(velocity);
     }
 
     @Override
