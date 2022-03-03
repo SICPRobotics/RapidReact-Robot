@@ -22,6 +22,7 @@ import frc.robot.controllers.joystick.Joystick;
 import frc.robot.controllers.operator.OperatorController;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.CargoIntake;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 /**
@@ -34,10 +35,11 @@ import frc.robot.subsystems.MotorSubsystem;
 public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final Joystick joystick = new Joystick(0);
-    private final DriveTrain driveTrain;
     private final OperatorController operator = new OperatorController(1);
-    private final CargoArm cargoArm = new CargoArm();
-    private final CargoIntake cargoIntake = new CargoIntake();
+    private final DriveTrain driveTrain;
+    private final CargoArm cargoArm;
+    private final CargoIntake cargoIntake;
+    private final Climber climber;
 
 
     /**
@@ -45,6 +47,9 @@ public final class RobotContainer {
      */
     public RobotContainer() {
         driveTrain = new DriveTrain();
+        cargoArm = new CargoArm();
+        cargoIntake = new CargoIntake();
+        climber = new Climber(); 
 
             
         driveTrain.setDefaultCommand(
@@ -68,14 +73,24 @@ public final class RobotContainer {
         /*joystick.button(5).whileHeld(new ArmCommand(cargoArm, .2));
         joystick.button(6).whileHeld(new ArmCommand(cargoArm, -.2));*/
 
-        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.7));
-        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.7));
+        // operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.7));
+        // operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.7));
+        doubleMotorSubsystemButton(operator.buttons.RS, operator.buttons.LS, cargoArm, 0.4, -0.2, false);
 
-        operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 0.2));
-        operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, -0.2));
+        doubleMotorSubsystemButton(operator.buttons.RB, operator.buttons.LB, cargoIntake, -0.8, 0.7, true);
+
+        doubleMotorSubsystemButton(operator.buttons.dPad.up, operator.buttons.dPad.down, climber, 0.5, -0.5, false);
+
+        // motorSubsystemButton(operator.buttons.dPad.up, climber, 0.5, false);
+        // motorSubsystemButton(operator.buttons.dPad.down, climber, -0.5, false);
         
     }
     
+    public void doubleMotorSubsystemButton(Button button1, Button button2, MotorSubsystem subsystem, double velocity1, double velocity2, boolean toggle){
+        motorSubsystemButton(button1, subsystem, velocity1, toggle);
+        motorSubsystemButton(button2, subsystem, velocity2, toggle);
+    }
+
     public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
         if(toggle){
             jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.setMotor(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
