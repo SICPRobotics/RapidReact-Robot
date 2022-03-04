@@ -69,35 +69,15 @@ public final class RobotContainer {
     private void configureButtonBindings() {
         joystick.thumb.toggleWhenPressed(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
-
-        /*joystick.button(5).whileHeld(new ArmCommand(cargoArm, .2));
-        joystick.button(6).whileHeld(new ArmCommand(cargoArm, -.2));*/
        
-        // operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.7));
-        // operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.7));
-        doubleMotorSubsystemButton(operator.buttons.RS, operator.buttons.LS, cargoArm, 0.4, -0.2, false);
-
-        doubleMotorSubsystemButton(operator.buttons.RB, operator.buttons.LB, cargoIntake, -0.8, 0.7, true);
-
-        doubleMotorSubsystemButton(operator.buttons.dPad.up, operator.buttons.dPad.down, climber, 0.5, -0.5, false);
+        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.7));
+        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.7));
 
         operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 0.4));
         operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, -0.4));
-        
-    }
-    
-    public void doubleMotorSubsystemButton(Button button1, Button button2, MotorSubsystem subsystem, double velocity1, double velocity2, boolean toggle){
-        motorSubsystemButton(button1, subsystem, velocity1, toggle);
-        motorSubsystemButton(button2, subsystem, velocity2, toggle);
-    }
 
-    public void motorSubsystemButton(Button jB, MotorSubsystem subsystem, double velocity, boolean toggle) {
-        if(toggle){
-            jB.toggleWhenPressed(new FunctionalCommand(() -> subsystem.setMotor(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
-        }
-        else{
-            jB.whileHeld(new FunctionalCommand(() -> subsystem.setMotor(velocity), () -> {}, (b) -> subsystem.turnOff(), () -> false, subsystem));
-        }
+        operator.buttons.Y.whileHeld(new MotorCommand(climber,  0.4));
+        operator.buttons.A.whileHeld(new MotorCommand(climber, -0.4));
     }
 
     // public void trajectory(TrajectoryGeneration trajectoryGeneration, DriveTrain driveTrain, Pose2d ){
