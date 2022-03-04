@@ -33,7 +33,7 @@ public final class DriveTrain extends SubsystemBaseWrapper {
     private final DifferentialDrive robotDrive = new DifferentialDrive(left, right);
     public DriveTrain() {
         super();
-        right.setInverted(true);
+        right.setInverted(true); 
         // Motors
         gyro.calibrate();
         frontRight.configFactoryDefault();
