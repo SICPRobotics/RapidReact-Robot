@@ -81,8 +81,8 @@ public final class RobotContainer {
 
         doubleMotorSubsystemButton(operator.buttons.dPad.up, operator.buttons.dPad.down, climber, 0.5, -0.5, false);
 
-        // motorSubsystemButton(operator.buttons.dPad.up, climber, 0.5, false);
-        // motorSubsystemButton(operator.buttons.dPad.down, climber, -0.5, false);
+        operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 0.4));
+        operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, -0.4));
         
     }
     
