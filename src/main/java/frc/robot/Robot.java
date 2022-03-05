@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     //robotContainer.generateTrajectory(SmartDashboard.getBoolean("Generate Trajectory", false));
+    SmartDashboardValues.postAllValues();
     CommandScheduler.getInstance().run();
   }
 
