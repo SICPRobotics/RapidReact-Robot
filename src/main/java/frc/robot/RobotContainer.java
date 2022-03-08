@@ -76,8 +76,8 @@ public final class RobotContainer {
         operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 0.4));
         operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, -0.4));
 
-        operator.buttons.Y.whileHeld(new MotorCommand(climber,  0.4));
-        operator.buttons.A.whileHeld(new MotorCommand(climber, -0.4));
+        operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
+        operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
     }
 
     // public void trajectory(TrajectoryGeneration trajectoryGeneration, DriveTrain driveTrain, Pose2d ){
