@@ -4,7 +4,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SmartDashBoardClass <T extends Sendable>{
+public class SmartDashBoardClass <T>{
     private final String key;
     private final T defaultValue;
     private boolean posted;
@@ -16,9 +16,11 @@ public class SmartDashBoardClass <T extends Sendable>{
         this.defaultValue = defaultValue;
         SmartDashboardValues.addValue(this);
     }
-    public static Sendable toSendable(Object value){
-        SendableBuilder builder = new SendableBuilder();
-    }
+    // public static Sendable toSendable(Object value){
+    //     SendableBuilder builder = new SendableBuilder().;
+    
+    
+    // }
 
     public String getKey() {
         return key;
@@ -55,6 +57,9 @@ public class SmartDashBoardClass <T extends Sendable>{
 //             builder.addDoubleProperty(this.key, () -> (double)value, (Object value) -> this.value = value);
 //         }
         
+//     }
+//     public Sendable getSendable(){
+//         return this;
 //     }
 
 // }
