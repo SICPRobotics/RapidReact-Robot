@@ -25,6 +25,12 @@ public class SmartDashboardValues {
             }
         }
     }
+    public static void saveAllValues(){
+        for(SmartDashBoardClass value : values){
+            value.setDefaultValue(value.getValue());
+        }
+        //save as Json 
+    }
     private static void postValue(SmartDashBoardClass value){
         if(value.getDefaultValue().getClass() == double.class){
             SmartDashboard.putNumber(value.getKey(), (double)value.getDefaultValue());

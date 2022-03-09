@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashBoardClass <T>{
     private final String key;
-    private final T defaultValue;
+    private T defaultValue;
     private boolean posted;
 
 
@@ -31,11 +31,14 @@ public class SmartDashBoardClass <T>{
     public T getDefaultValue() {
         return defaultValue;
     }
-    public boolean getPosted(){
+    public boolean getPosted(){ 
         return this.posted;
     }
     public void post(){
         this.posted = true;
+    }
+    public void setDefaultValue(T value){
+        this.defaultValue = value;
     }
 
 }
