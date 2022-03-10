@@ -28,8 +28,41 @@ public class SmartDashBoardClass <T>{
     // public T getValue(){
     //     return (T)SmartDashboard.getData(key);
     // }
-    public Double getValue(){
-        return SmartDashboard.getNumber(this.key, (Double)this.defaultValue);
+    // public Double getValue(){
+    //     return SmartDashboard.getNumber(this.key, (Double)this.defaultValue);
+    // }
+    // public T getValue(){
+    //     if(this.defaultValue.getClass() == Double.class){
+    //         return (T)SmartDashboard.getNumber(this.key, (Double)this.defaultValue);
+    //     }
+    // }
+
+    public T getValue(){
+        if(this.getDefaultValue().getClass() == double.class){
+            return (T)(Double)SmartDashboard.getNumber(this.getKey(), (double)this.getDefaultValue());
+        }
+        else if(this.getDefaultValue().getClass() == boolean.class){
+            return (T)(Boolean)SmartDashboard.getBoolean(this.getKey(), (boolean)this.getDefaultValue());
+        }
+        else if(this.getDefaultValue().getClass() == String.class){
+            return (T)SmartDashboard.getString(this.getKey(), (String)this.getDefaultValue());
+        }
+        else if(this.getDefaultValue().getClass() == boolean[].class){
+            return (T)SmartDashboard.getBooleanArray(this.getKey(), (boolean[])this.getDefaultValue());
+        }
+        else if(this.getDefaultValue().getClass() == double[].class){
+            return (T)SmartDashboard.getNumberArray(this.getKey(), (double[])this.getDefaultValue());
+        }
+        else if(this.getDefaultValue().getClass() == String[].class){
+            return (T)SmartDashboard.getStringArray(this.getKey(), (String[])this.getDefaultValue());
+        }
+        else if(Sendable.class.isAssignableFrom(this.getClass())){
+            return (T)SmartDashboard.getData(this.getKey());
+        }
+        else{
+            System.err.println("Not Able to post to SmartDashBoard");
+            return null;
+        }
     }
     // add for other classes but it works bitch
     public T getDefaultValue() {
