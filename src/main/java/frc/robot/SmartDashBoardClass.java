@@ -25,9 +25,13 @@ public class SmartDashBoardClass <T>{
     public String getKey() {
         return key;
     }
-    public T getValue(){
-        return (T)SmartDashboard.getData(key);
+    // public T getValue(){
+    //     return (T)SmartDashboard.getData(key);
+    // }
+    public Double getValue(){
+        return SmartDashboard.getNumber(this.key, (Double)this.defaultValue);
     }
+    // add for other classes but it works bitch
     public T getDefaultValue() {
         return defaultValue;
     }
@@ -40,7 +44,12 @@ public class SmartDashBoardClass <T>{
     public void setDefaultValue(T value){
         this.defaultValue = value;
     }
-
+    public void jsonSave(GsonSaver gsonSaver){
+        gsonSaver.saveObject(this, this.key);
+    }
+    public SmartDashBoardClass<T> replace(){
+        return new SmartDashBoardClass<T>(this.key, this.defaultValue);
+    }
 }
 
 // class toSendable<T> implements Sendable{

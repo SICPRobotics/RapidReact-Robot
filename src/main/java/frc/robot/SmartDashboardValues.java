@@ -6,7 +6,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardValues {
-    private static ArrayList<SmartDashBoardClass> values;
+    private static ArrayList<SmartDashBoardClass> values = new ArrayList<SmartDashBoardClass>();
 
     public static void addValue(SmartDashBoardClass value){
         values.add(value);
@@ -15,6 +15,7 @@ public class SmartDashboardValues {
         return values;
     }
     public static void postAllValues(){
+        //System.out.println("POSTALLVALUES");
         for(SmartDashBoardClass value : values){
             if(!value.getPosted()){
                 postValue(value);
@@ -25,12 +26,21 @@ public class SmartDashboardValues {
             }
         }
     }
-    public static void saveAllValues(){
+    public static void setAllValues(){
         for(SmartDashBoardClass value : values){
             value.setDefaultValue(value.getValue());
         }
-        //save as Json 
     }
+    public static void setValue(String key){
+        for(SmartDashBoardClass value : values){
+            if(key.equals(value.getKey())){
+                value.setDefaultValue(value.getValue());
+            }
+        }
+    }
+    // public static void saveValues(GsonSaver gsonSaver){
+        
+    // }
     private static void postValue(SmartDashBoardClass value){
         if(value.getDefaultValue().getClass() == double.class){
             SmartDashboard.putNumber(value.getKey(), (double)value.getDefaultValue());

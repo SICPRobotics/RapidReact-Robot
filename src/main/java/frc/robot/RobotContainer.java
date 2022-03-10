@@ -40,6 +40,7 @@ public final class RobotContainer {
     private final CargoArm cargoArm;
     private final CargoIntake cargoIntake;
     private final Climber climber;
+    // private final SmartDashBoardClass<Double> intakevalue;
 
 
     /**
@@ -50,11 +51,12 @@ public final class RobotContainer {
         cargoArm = new CargoArm();
         cargoIntake = new CargoIntake();
         climber = new Climber(); 
-
+        // intakevalue = new SmartDashBoardClass<Double>("intakeValue", 0.0);
             
         driveTrain.setDefaultCommand(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
-
+            
+        
         // Configure the button bindings
         configureButtonBindings();
         SmartDashboard.putNumber("Auton Chooser", 0);
