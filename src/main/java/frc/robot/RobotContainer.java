@@ -6,12 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 //simport edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -75,8 +77,10 @@ public final class RobotContainer {
         operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.7));
         operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.7));
 
-        operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 80));
-        operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, 73));
+        //operator.buttons.dPad.up.whenPressed(new PIDCommand(new PIDController(0.1, 0.1, 0), cargoArm::getRoll, () -> 80,  output -> cargoArm.setMotor(output), cargoArm));
+        
+        operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 0.7));
+        operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, -0.7));
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  0.4));
         operator.buttons.A.whileHeld(new MotorCommand(climber, -0.4));

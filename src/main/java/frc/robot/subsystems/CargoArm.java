@@ -18,17 +18,19 @@ public class CargoArm extends PIDSubsystem implements MotorSubsystem{
 
     private final CANSparkMax cargoArm = new CANSparkMax(Constants.Arm.ARM_MOTOR_ID, MotorType.kBrushless);
     private final PigeonIMU gyro = new PigeonIMU(10);
-    private final SimpleMotorFeedforward shooterFeedforward = new SimpleMotorFeedforward(2, 2, 0);
+    private final SimpleMotorFeedforward shooterFeedforward = new SimpleMotorFeedforward(2, 2, 2);
 
 
     public CargoArm() {
         super(new PIDController(0.1, 1, 0));
-        this.m_controller.setTolerance(0.1, 0.1);
+        this.m_controller.setTolerance(1, 1);
         this.cargoArm.setIdleMode(IdleMode.kBrake);
     }
     @Override
     protected void useOutput(double output, double setpoint) {
-        this.cargoArm.setVoltage(output + shooterFeedforward.calculate(setpoint));  
+
+        System.out.println("USEOUTPUT: " + output + ", " + shooterFeedforward.calculate(setpoint));
+        this.cargoArm.setVoltage(shooterFeedforward.calculate(setpoint));  
     }
     @Override
     public void periodic() {
@@ -36,10 +38,13 @@ public class CargoArm extends PIDSubsystem implements MotorSubsystem{
         SmartDashboard.putNumber("ArmRoll", this.gyro.getRoll());        
         SmartDashboard.putNumber("ArmPitch", this.gyro.getPitch());
         SmartDashboard.putNumber("ArmYaw", this.gyro.getYaw());
+        //System.out.println((this.getMeasurement() + shooterFeedforward.calculate()));
     }
     public void setMotor(double value) {
-        this.setSetpoint(value);
-        this.enable();     
+        //System.out.println("SETMOTOR ARM" );
+        // this.setSetpoint(value);
+        // this.enable();     
+        this.cargoArm.set(value);
     }
     public double getRoll(){
         return this.gyro.getRoll();

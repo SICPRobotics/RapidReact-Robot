@@ -24,7 +24,7 @@ public class ArmCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        arm.setMotor(value);
+        arm.setMotor(this.value);
     }
     @Override 
     public void end(boolean b){
@@ -32,6 +32,7 @@ public class ArmCommand extends CommandBase {
     }
     @Override
     public boolean isFinished(){
-        return arm.getController().atSetpoint();
+        return false;
+        //return !arm.getController().atSetpoint();
     }
 }

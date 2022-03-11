@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SmartDashboardValues {
     private static ArrayList<SmartDashBoardClass> values = new ArrayList<SmartDashBoardClass>();
 
+
+    public static void clear(){
+        values = new ArrayList<SmartDashBoardClass>();
+    }
+
     public static void addValue(SmartDashBoardClass value){
         values.add(value);
     }
