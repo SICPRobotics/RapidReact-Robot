@@ -70,8 +70,8 @@ public final class RobotContainer {
         joystick.thumb.toggleWhenPressed(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
        
-        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.7));
-        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.7));
+        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -1));
+        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  1));
 
         operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 0.4));
         operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, -0.4));
