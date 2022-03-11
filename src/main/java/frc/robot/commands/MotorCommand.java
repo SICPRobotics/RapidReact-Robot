@@ -14,6 +14,7 @@ public class MotorCommand extends CommandBase{
     
     @Override
     public void initialize() {
+        //System.out.println(this.motorSubsystem.toString());
         this.motorSubsystem.setMotor(velocity);
     }
 

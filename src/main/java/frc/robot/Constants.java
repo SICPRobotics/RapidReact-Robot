@@ -46,7 +46,7 @@ public final class Constants {
     }
     public static class Climber{
         public static final int CLIMBER_MOTOR_ID = 4;
-        public static final int CLIMBER_SERVO_ID = 4;
+        //public static final int CLIMBER_SERVO_ID = 4;
     }
 
 }
