@@ -72,7 +72,7 @@ public final class RobotContainer {
      */
     private void configureButtonBindings() {
         joystick.thumb.toggleWhenPressed(
-            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
+            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, true));
        
         operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.7));
         operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.7));
