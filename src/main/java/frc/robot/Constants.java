@@ -41,10 +41,10 @@ public final class Constants {
             public static final int TANK_DRIVE_WITH_VOLTS = 2;
         }
         public final class kinematics{
-            public static final double S = 1.4521; // static voltage constant ks THIS VALUE IS FOR 2021 Robot
-            public static final double V = 2.8559; // velocity voltage constant kv THIS VALUE IS FOR 2021 Robot
-            public static final double A = 1.3644; // acceloration voltage constant ka THIS VALUE IS FOR 2021 Robot
-            public static final double P = 2.5115; // Proportionality gain for the drive train THIS VALUE IS FOR 2021 Robot
+            public static final double S = 0.85586; // static voltage constant ks THIS VALUE IS FOR 2022 Robot
+            public static final double V = 3.0598; // velocity voltage constant kv THIS VALUE IS FOR 2022 Robot
+            public static final double A = 0.86192; // acceloration voltage constant ka THIS VALUE IS FOR 2022 Robot
+            public static final double P = 2.5115; // Proportionality gain for the drive train THIS VALUE IS FOR 2022 Robot
             public static final double I = 0; // Interal gain for the drive train 
             public static final double D = 0; // Derivative gain for the drive train 
         }
@@ -62,10 +62,6 @@ public final class Constants {
     public final class Arm{
         public static final int INTAKE_MOTOR_ID = 8;
         public static final int ARM_MOTOR_ID = 5;
-    }
-    public static class Climber{
-        public static final int CLIMBER_MOTOR_ID = 4;
-        //public static final int CLIMBER_SERVO_ID = 4;
     }
 
 }

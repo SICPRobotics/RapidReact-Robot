@@ -42,7 +42,6 @@ import frc.robot.controllers.joystick.Joystick;
 import frc.robot.controllers.operator.OperatorController;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.CargoIntake;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.SimpleMotorSubsystem;
@@ -61,7 +60,7 @@ public final class RobotContainer {
     private final ArmSubsystem arm;
     private final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
     private final GsonSaver gsonSaver;
-    private final OperatorController controller = new OperatorController(1);
+    private final OperatorController operator = new OperatorController(1);
     private final CargoArm cargoArm;
     private final CargoIntake cargoIntake;
 
@@ -96,7 +95,7 @@ public final class RobotContainer {
         ), 
         new Pose2d(new Translation2d(7,0), new Rotation2d(0)),
          new TrajectoryConfig(4, 2), "nottest");
-        trajectoryGeneration.printTrajectory("test");
+        //trajectoryGeneration.printTrajectory("test");
     }
 
     /**
