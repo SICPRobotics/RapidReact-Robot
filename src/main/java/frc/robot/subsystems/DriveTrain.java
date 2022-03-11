@@ -43,8 +43,8 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
     private final DifferentialDrive robotDrive = new DifferentialDrive(left, right);
     public DriveTrain() {
         super();
-        right.setInverted(true);
-        // Motors 
+        right.setInverted(true); 
+        // Motors
         gyro.calibrate();
         frontRight.configFactoryDefault();
         frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);

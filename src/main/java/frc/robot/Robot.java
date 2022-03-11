@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    
+    SmartDashboardValues.clear();
     // UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
     // UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(1);
     // cam2.setResolution(320, 320);
@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     //robotContainer.generateTrajectory(SmartDashboard.getBoolean("Generate Trajectory", false));
+    SmartDashboardValues.postAllValues();
     CommandScheduler.getInstance().run();
   }
 

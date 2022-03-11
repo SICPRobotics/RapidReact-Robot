@@ -2,7 +2,7 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2022.2.1"
+    id "edu.wpi.first.GradleRIO" version "2022.4.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -54,7 +54,6 @@ dependencies {
     implementation wpi.java.vendor.java()
 
     implementation 'com.google.code.gson:gson:2.8.9'
-
 
     roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
     roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)

@@ -6,6 +6,7 @@ import frc.robot.subsystems.MotorSubsystem;
 public class MotorCommand extends CommandBase{
     private final MotorSubsystem motorSubsystem;
     private double velocity;
+    
     public MotorCommand(MotorSubsystem motorSubsystem, double velocity){
         this.motorSubsystem = motorSubsystem;
         this.velocity = velocity;
@@ -13,7 +14,8 @@ public class MotorCommand extends CommandBase{
     
     @Override
     public void initialize() {
-        this.motorSubsystem.turnOn(velocity);
+        //System.out.println(this.motorSubsystem.toString());
+        this.motorSubsystem.setMotor(velocity);
     }
 
     @Override

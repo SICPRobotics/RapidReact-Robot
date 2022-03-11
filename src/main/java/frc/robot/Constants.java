@@ -59,5 +59,13 @@ public final class Constants {
         public static final int Z_AXIS = 2;
         public static final int SCALE_AXIS = 3;
     }
+    public final class Arm{
+        public static final int INTAKE_MOTOR_ID = 8;
+        public static final int ARM_MOTOR_ID = 5;
+    }
+    public static class Climber{
+        public static final int CLIMBER_MOTOR_ID = 4;
+        //public static final int CLIMBER_SERVO_ID = 4;
+    }
 
 }
