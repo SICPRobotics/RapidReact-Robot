@@ -118,6 +118,8 @@ public final class RobotContainer {
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  0.4));
         operator.buttons.A.whileHeld(new MotorCommand(climber, -0.4));
+        
+        joystick.button(12).whenPressed(new FunctionalCommand(() -> this.driveTrain.setSavedPose(), () -> {}, (b)->{}, () -> true, driveTrain));
     }
 
     // public void trajectory(TrajectoryGeneration trajectoryGeneration, DriveTrain driveTrain, Pose2d ){

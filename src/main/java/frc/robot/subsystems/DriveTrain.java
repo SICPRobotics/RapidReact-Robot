@@ -41,6 +41,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
     private final MotorControllerGroup left = new MotorControllerGroup(frontLeft, rearLeft);
     private final MotorControllerGroup right = new MotorControllerGroup(frontRight, rearRight);
     private final DifferentialDrive robotDrive = new DifferentialDrive(left, right);
+    private Pose2d savedPose = new Pose2d();
     public DriveTrain() {
         super();
         right.setInverted(true); 
@@ -57,7 +58,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
         chassisSpeeds = new ChassisSpeeds(0,0,0);
         this.robotDrive.setSafetyEnabled(false);
-        frontLeft.neutralOutput();
+        //frontLeft.neutralOutput();
         //reset();
     }
     public void setMotor(double value) {
@@ -126,7 +127,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         SmartDashboard.putNumber("TalonSRX 1 (rear right) Temperature", rearRight.getTemperature());
         SmartDashboard.putNumber("TalonSRX 2 (rear left) Temperature", rearLeft.getTemperature());
         SmartDashboard.putNumber("TalonSRX 3 (front left) Temperature", frontLeft.getTemperature());
-        SmartDashboard.putNumberArray("test Array", new double[2]);
+        //SmartDashboard.putNumberArray("test Array", new double[2]);
         SmartDashboard.putNumber("Linear Velocity", getLinearVelocity());
         SmartDashboard.putNumber("Angular Velocity", getAngularVelocity());
         SmartDashboard.putNumber("Front Left Motor Volts", getLeftVolts());
@@ -149,6 +150,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         SmartDashboard.putNumber("Rear Right Side Volts", this.rearRight.getMotorOutputVoltage());
         SmartDashboard.putNumber("Left Side Volt Difference", this.frontLeft.getMotorOutputVoltage() - this.rearLeft.getMotorOutputVoltage());
         SmartDashboard.putNumber("Right Side Volt Difference", this.frontRight.getMotorOutputVoltage() - this.rearRight.getMotorOutputVoltage());
+        SmartDashboard.putString("Saved Pose", this.savedPose.toString());
         //System.out.println(this.getLeftDistanceMeters());
 
         //System.out.println(odometry.getPoseMeters().getTranslation().getX());
@@ -196,6 +198,9 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
     }
     public Pose2d getPose(){
         return odometry.getPoseMeters();
+    }
+    public void setSavedPose(){
+        this.savedPose = this.getPose();
     }
     private void updatePose(){
         odometry.update(new Rotation2d(getRadians()), getLeftDistanceMeters(), getRightDistanceMeters());
