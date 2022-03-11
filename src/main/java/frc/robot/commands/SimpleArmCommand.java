@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CargoArm;
 
-public class ArmCommand extends CommandBase {
+public class SimpleArmCommand extends CommandBase {
     private final CargoArm arm;
     private final double amount;
     private final Timer timer = new Timer();
-    public ArmCommand(CargoArm arm, double amount) {
+    public SimpleArmCommand(CargoArm arm, double amount) {
         this.arm = arm;
         addRequirements(arm);
         this.amount = amount;

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.ArmCommand;
+import frc.robot.commands.SimpleArmCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.controllers.joystick.Joystick;
@@ -25,6 +25,7 @@ import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
+import frc.robot.subsystems.Pidgey;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -40,6 +41,7 @@ public final class RobotContainer {
     private final CargoArm cargoArm;
     private final CargoIntake cargoIntake;
     private final Climber climber;
+    private final Pidgey pidgey;
 
 
     /**
@@ -49,7 +51,8 @@ public final class RobotContainer {
         driveTrain = new DriveTrain();
         cargoArm = new CargoArm();
         cargoIntake = new CargoIntake();
-        climber = new Climber(); 
+        climber = new Climber();
+        pidgey = new Pidgey();
 
             
         driveTrain.setDefaultCommand(
@@ -73,8 +76,8 @@ public final class RobotContainer {
         operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -1));
         operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  1));
 
-        operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 0.4));
-        operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, -0.4));
+        operator.buttons.dPad.up.whileHeld(new SimpleArmCommand(cargoArm, 0.4));
+        operator.buttons.dPad.down.whileHeld(new SimpleArmCommand(cargoArm, -0.4));
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
         operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
