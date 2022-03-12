@@ -19,6 +19,6 @@ public class Climber extends SimpleMotorSubsystem {
 
     @Override
     public void setMotor(double velocity){
-        setMotor(velocity);
+        super.setMotor(velocity);
     }
 }
