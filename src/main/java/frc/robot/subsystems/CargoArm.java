@@ -28,18 +28,6 @@ public class CargoArm implements MotorSubsystem{
     public void turnOff(){
         this.armMotor.set(0);
     }
-    public double getRoll(){
-        return this.gyro.getRoll();
-    }
-    @Override
-    protected double getMeasurement() {
-        return this.gyro.getRoll();
-    }
-    @Override
-    public void turnOff() {
-        this.disable();
-        this.cargoArm.set(0);
-    }
 
 
 }

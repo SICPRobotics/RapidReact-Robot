@@ -27,21 +27,16 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.Constants.Climber;
-import frc.robot.commands.ArmHoldY;
 import frc.robot.commands.AutonumusCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.NudgeServo;
 import frc.robot.controllers.operator.OperatorController;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CargoArm;
 import frc.robot.commands.SimpleArmCommand;
-import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.controllers.joystick.Joystick;
-import frc.robot.controllers.operator.OperatorController;
-import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.CargoIntake;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.Pidgey;
@@ -56,8 +51,6 @@ public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final Joystick joystick;
     private final DriveTrain driveTrain;
-    private final ClimbSubsystem climber;
-    private final ArmSubsystem arm;
     private final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
     private final GsonSaver gsonSaver;
     private final OperatorController operator = new OperatorController(1);
@@ -74,9 +67,7 @@ public final class RobotContainer {
     public RobotContainer() {
         driveTrain = new DriveTrain();
         joystick = new Joystick(0);
-        climber = new ClimbSubsystem();
         gsonSaver = new GsonSaver();
-        arm = new ArmSubsystem();
         cargoArm = new CargoArm();
         cargoIntake = new CargoIntake();
         autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
