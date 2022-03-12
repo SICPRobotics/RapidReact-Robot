@@ -35,8 +35,7 @@ import frc.robot.commands.NudgeServo;
 import frc.robot.controllers.operator.OperatorController;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CargoArm;
-import frc.robot.subsystems.ClimbSubsystem;
-import frc.robot.commands.ArmCommand;
+import frc.robot.commands.SimpleArmCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.controllers.joystick.Joystick;
@@ -45,7 +44,7 @@ import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
-import frc.robot.subsystems.SimpleMotorSubsystem;
+import frc.robot.subsystems.Pidgey;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -65,6 +64,9 @@ public final class RobotContainer {
     private final CargoArm cargoArm;
     private final CargoIntake cargoIntake;
     private SmartDashBoardClass<Double> autoVersion;
+    private final Climber climber;
+    private final Pidgey pidgey;
+
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -79,6 +81,10 @@ public final class RobotContainer {
         cargoIntake = new CargoIntake();
         autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
         trajectoryGeneration.addGson(gsonSaver);
+        climber = new Climber();
+        pidgey = new Pidgey();
+
+            
         driveTrain.setDefaultCommand(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
             
@@ -111,18 +117,14 @@ public final class RobotContainer {
         joystick.thumb.toggleWhenPressed(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
        
-        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.7));
-        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.7));
+        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -1));
+        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  1));
 
-        //operator.buttons.dPad.up.whenPressed(new PIDCommand(new PIDController(0.1, 0.1, 0), cargoArm::getRoll, () -> 80,  output -> cargoArm.setMotor(output), cargoArm));
-        
-        operator.buttons.dPad.up.whileHeld(new ArmCommand(cargoArm, 0.7));
-        operator.buttons.dPad.down.whileHeld(new ArmCommand(cargoArm, -0.7));
+        operator.buttons.dPad.up.whileHeld(new SimpleArmCommand(cargoArm, 0.4));
+        operator.buttons.dPad.down.whileHeld(new SimpleArmCommand(cargoArm, -0.4));
 
-        operator.buttons.Y.whileHeld(new MotorCommand(climber,  0.4));
-        operator.buttons.A.whileHeld(new MotorCommand(climber, -0.4));
-        
-        joystick.button(12).whenPressed(new FunctionalCommand(() -> this.driveTrain.setSavedPose(), () -> {}, (b)->{}, () -> true, driveTrain));
+        operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
+        operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
     }
 
     // public void trajectory(TrajectoryGeneration trajectoryGeneration, DriveTrain driveTrain, Pose2d ){

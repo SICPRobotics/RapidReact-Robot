@@ -6,19 +6,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.SmartDashBoardClass;
 
-public class CargoIntake extends SimpleMotorSubsystem{
+public class CargoIntake implements MotorSubsystem{
 
-    WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.Arm.INTAKE_MOTOR_ID);
-    //private final SmartDashBoardClass<Double> intakeValue;
+    WPI_TalonSRX intakeMotor;
     public CargoIntake(){
-        super(); 
-        setMotorController(this.intakeMotor);
-        //intakeValue = new SmartDashBoardClass<Double>("intakeValue", 0.0);
-        //SmartDashboard.putNumber("intakeValue", 0);
+        this.intakeMotor = new WPI_TalonSRX(Constants.Arm.INTAKE_MOTOR_ID);
     }
-    @Override
-    public void setMotor(double value) {
-        super.setMotor(value);
-        //super.setMotor(this.intakeValue.getValue());
+    public void setMotor(double velocity){
+        this.intakeMotor.set(velocity);
+    }
+    public void turnOff(){
+        this.intakeMotor.set(0);
     }
 }

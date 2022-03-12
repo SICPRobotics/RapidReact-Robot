@@ -10,13 +10,10 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.CargoArm;
 
-public class ArmCommand extends CommandBase {
-    
+public class SimpleArmCommand extends CommandBase {
     private final CargoArm arm;
     private final double value;
-    
-    public ArmCommand(CargoArm arm, double value){
-        super();
+    public SimpleArmCommand(CargoArm arm, double value) {
         this.arm = arm;
         this.value = value;
     }

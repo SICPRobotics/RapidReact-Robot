@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -47,13 +48,18 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         right.setInverted(true); 
         // Motors
         gyro.calibrate();
+
         frontRight.configFactoryDefault();
         frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
         frontRight.setSelectedSensorPosition(0);
+        frontRight.setNeutralMode(NeutralMode.Brake);
+
         rearRight.configFactoryDefault();
         frontLeft.configFactoryDefault();
         frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
         frontLeft.setSelectedSensorPosition(0); // LEFT IS WRONG DIRECTION BY DEFAULT
+        frontLeft.setNeutralMode(NeutralMode.Brake);
+
         rearLeft.configFactoryDefault();
         odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
         chassisSpeeds = new ChassisSpeeds(0,0,0);
