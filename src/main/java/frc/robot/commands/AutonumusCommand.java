@@ -67,6 +67,9 @@ public class AutonumusCommand extends CommandBase{
             this.driveTrain.cheesyDrive(0,0);
         }
     }
+    else if(version == 3){
+        this.intake.setMotor(1);
+    }
     else{
 
     }
