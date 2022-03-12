@@ -45,7 +45,7 @@ public final class Constants {
         public static final int ARM_MOTOR_ID = 5;
     }
     public static class Climber{
-        public static final int CLIMBER_MOTOR_ID = 6;
+        public static final int CLIMBER_MOTOR_ID = 4;
         public static final int CLIMBER_SERVO_ID = 4;
     }
 

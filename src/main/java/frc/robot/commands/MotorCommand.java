@@ -9,6 +9,7 @@ public class MotorCommand extends CommandBase{
     public MotorCommand(MotorSubsystem motorSubsystem, double velocity){
         this.motorSubsystem = motorSubsystem;
         this.velocity = velocity;
+        addRequirements(motorSubsystem);
     }
     
     @Override

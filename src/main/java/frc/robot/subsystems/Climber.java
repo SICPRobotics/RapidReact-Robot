@@ -7,20 +7,23 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Servo;
 import frc.robot.Constants;
+import frc.robot.SubsystemBaseWrapper;
 
-public class Climber implements MotorSubsystem {
+public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
     
-    private final WPI_TalonFX climberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
+    private final WPI_TalonFX climberMotor;
 
     public Climber(){
+        this.climberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
         climberMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
     public void setMotor(double velocity){
-        this.climberMotor.set(ControlMode.PercentOutput, velocity);
+        System.out.println(this.climberMotor.toString());
+        this.climberMotor.set(velocity);
     }
     public void turnOff(){
-        this.climberMotor.set(ControlMode.PercentOutput, 0);
+        this.climberMotor.set(0);
     }
 }
