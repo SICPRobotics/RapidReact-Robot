@@ -25,9 +25,9 @@ public final class Constants {
     }
 
     public final class DriveTrain {
-        public static final int FRONT_RIGHT_MOTOR_ID = 1;
+        public static final int FRONT_RIGHT_MOTOR_ID = 0;
         public static final int FRONT_LEFT_MOTOR_ID = 2;
-        public static final int REAR_RIGHT_MOTOR_ID = 0;
+        public static final int REAR_RIGHT_MOTOR_ID = 1;
         public static final int REAR_LEFT_MOTOR_ID = 3;
         public static final double COUNTS_PER_ROTAION = 4096;
         public static final double X_AXIS_DEADZONE_RANGE = 0.005;
