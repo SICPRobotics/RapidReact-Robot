@@ -11,15 +11,16 @@ import frc.robot.SubsystemBaseWrapper;
 
 public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
     
-    private final WPI_TalonFX climberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
+    private final WPI_TalonFX climberMotor;
 
     public Climber(){
+        this.climberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
         climberMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
     public void setMotor(double velocity){
-        System.out.println("velocity climber: " + velocity );
+        System.out.println(this.climberMotor.toString());
         this.climberMotor.set(velocity);
     }
     public void turnOff(){
