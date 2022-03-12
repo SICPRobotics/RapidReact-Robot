@@ -56,7 +56,7 @@ public final class RobotContainer {
     private final OperatorController operator = new OperatorController(1);
     private final CargoArm cargoArm;
     private final CargoIntake cargoIntake;
-    private SmartDashBoardClass<Double> autoVersion;
+    private SmartDashBoardClass<Double> autoVersion, autoDelay;
     private final Climber climber;
     private final Pidgey pidgey;
 
@@ -71,6 +71,7 @@ public final class RobotContainer {
         cargoArm = new CargoArm();
         cargoIntake = new CargoIntake();
         autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
+        autoDelay = new SmartDashBoardClass<Double>("autoDelay", 0.0);
         trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
         pidgey = new Pidgey();
@@ -125,7 +126,7 @@ public final class RobotContainer {
     // }
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
-        return new AutonumusCommand(driveTrain, cargoArm, cargoIntake, this.autoVersion.getValue().intValue());
+        return new AutonumusCommand(driveTrain, cargoArm, cargoIntake, this.autoVersion.getValue().intValue(), this.autoDelay.getValue().doubleValue());
         //return trajectoryGeneration.getTrajectoryCommand(driveTrain, "nottest");
     }
     

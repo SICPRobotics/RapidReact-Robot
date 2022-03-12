@@ -47,19 +47,19 @@ public class SmartDashboardValues {
         
     // }
     private static void postValue(SmartDashBoardClass value){
-        if(value.getDefaultValue().getClass() == double.class){
+        if(value.getDefaultValue().getClass() == Double.class){
             SmartDashboard.putNumber(value.getKey(), (double)value.getDefaultValue());
         }
-        else if(value.getDefaultValue().getClass() == boolean.class){
+        else if(value.getDefaultValue().getClass() == Boolean.class){
             SmartDashboard.putBoolean(value.getKey(), (boolean)value.getDefaultValue());
         }
         else if(value.getDefaultValue().getClass() == String.class){
             SmartDashboard.putString(value.getKey(), (String)value.getDefaultValue());
         }
-        else if(value.getDefaultValue().getClass() == boolean[].class){
+        else if(value.getDefaultValue().getClass() == Boolean[].class){
             SmartDashboard.putBooleanArray(value.getKey(), (boolean[])value.getDefaultValue());
         }
-        else if(value.getDefaultValue().getClass() == double[].class){
+        else if(value.getDefaultValue().getClass() == Double[].class){
             SmartDashboard.putNumberArray(value.getKey(), (double[])value.getDefaultValue());
         }
         else if(value.getDefaultValue().getClass() == String[].class){
@@ -69,7 +69,7 @@ public class SmartDashboardValues {
             SmartDashboard.putData(value.getKey(), (Sendable)value.getDefaultValue());
         }
         else{
-            System.err.println("Not Able to post to SmartDashBoard");
+            System.err.println("Not Able to post " + value.getDefaultValue().getClass() + " to SmartDashBoard");
         }
     }
 }

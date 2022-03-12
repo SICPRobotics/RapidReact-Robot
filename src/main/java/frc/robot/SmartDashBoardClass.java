@@ -38,19 +38,19 @@ public class SmartDashBoardClass <T>{
     // }
 
     public T getValue(){
-        if(this.getDefaultValue().getClass() == double.class){
+        if(this.getDefaultValue().getClass() == Double.class){
             return (T)(Double)SmartDashboard.getNumber(this.getKey(), (double)this.getDefaultValue());
         }
-        else if(this.getDefaultValue().getClass() == boolean.class){
+        else if(this.getDefaultValue().getClass() == Boolean.class){
             return (T)(Boolean)SmartDashboard.getBoolean(this.getKey(), (boolean)this.getDefaultValue());
         }
         else if(this.getDefaultValue().getClass() == String.class){
             return (T)SmartDashboard.getString(this.getKey(), (String)this.getDefaultValue());
         }
-        else if(this.getDefaultValue().getClass() == boolean[].class){
+        else if(this.getDefaultValue().getClass() == Boolean[].class){
             return (T)SmartDashboard.getBooleanArray(this.getKey(), (boolean[])this.getDefaultValue());
         }
-        else if(this.getDefaultValue().getClass() == double[].class){
+        else if(this.getDefaultValue().getClass() == Double[].class){
             return (T)SmartDashboard.getNumberArray(this.getKey(), (double[])this.getDefaultValue());
         }
         else if(this.getDefaultValue().getClass() == String[].class){
