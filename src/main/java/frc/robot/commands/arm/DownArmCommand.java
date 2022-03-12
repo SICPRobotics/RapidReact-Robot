@@ -11,7 +11,11 @@ public class DownArmCommand extends SmartArmCommand {
 
     @Override
     public double getOutput() {
-        return 0;
+        if (progress > 0.8) {
+            return 0;
+        } else {
+            return -0.4;
+        }
     }
     
 }
