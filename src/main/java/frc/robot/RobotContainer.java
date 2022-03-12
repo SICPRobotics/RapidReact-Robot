@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.Constants.Climber;
 import frc.robot.commands.ArmHoldY;
+import frc.robot.commands.AutonumusCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.NudgeServo;
 import frc.robot.controllers.operator.OperatorController;
@@ -63,6 +64,7 @@ public final class RobotContainer {
     private final OperatorController operator = new OperatorController(1);
     private final CargoArm cargoArm;
     private final CargoIntake cargoIntake;
+    private SmartDashBoardClass<Double> autoVersion;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -75,6 +77,7 @@ public final class RobotContainer {
         arm = new ArmSubsystem();
         cargoArm = new CargoArm();
         cargoIntake = new CargoIntake();
+        autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
         trajectoryGeneration.addGson(gsonSaver);
         driveTrain.setDefaultCommand(
             new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
@@ -129,7 +132,8 @@ public final class RobotContainer {
     // }
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
-        return trajectoryGeneration.getTrajectoryCommand(driveTrain, "nottest");
+        return new AutonumusCommand(driveTrain, cargoArm, cargoIntake, this.autoVersion.getValue().intValue());
+        //return trajectoryGeneration.getTrajectoryCommand(driveTrain, "nottest");
     }
     
 }
