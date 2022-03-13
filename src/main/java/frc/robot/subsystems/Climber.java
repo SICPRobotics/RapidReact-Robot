@@ -1,32 +1,29 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Servo;
 import frc.robot.Constants;
+import frc.robot.SubsystemBaseWrapper;
 
-public class Climber extends SimpleMotorSubsystem{
+public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
     
-    private final WPI_TalonFX CLimberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
-    //private final Servo servo = new Servo(Constants.Climber.CLIMBER_SERVO_ID);
-    //private boolean locked;
+    private final WPI_TalonFX climberMotor;
 
     public Climber(){
-        super();
-        this.CLimberMotor.setNeutralMode(NeutralMode.Brake);
-        setMotorController(this.CLimberMotor);
-        //locked = true;
+        this.climberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
+        climberMotor.setNeutralMode(NeutralMode.Brake);
     }
+
     @Override
     public void setMotor(double velocity){
-        //System.out.println("SET MOTO CLIMBER");
-        super.setMotor(velocity);
+        System.out.println(this.climberMotor.toString());
+        this.climberMotor.set(velocity);
     }
-    
-    // public void lockClimber(boolean lock){
-    //     this.locked = lock;
-    //     this.servo.set(lock ? 1 : 0);
-    // }
+    public void turnOff(){
+        this.climberMotor.set(0);
+    }
 }

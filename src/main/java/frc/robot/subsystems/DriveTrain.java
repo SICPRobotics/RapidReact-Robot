@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -36,15 +37,30 @@ public final class DriveTrain extends SubsystemBaseWrapper {
         right.setInverted(true); 
         // Motors
         gyro.calibrate();
+
         frontRight.configFactoryDefault();
-        frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
-        frontRight.setSelectedSensorPosition(0);
+        frontRight.setNeutralMode(NeutralMode.Brake);
+
         rearRight.configFactoryDefault();
+        rearRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
+        rearRight.setSelectedSensorPosition(0);
+        rearRight.setNeutralMode(NeutralMode.Brake);
+
         //right = new SpeedControllerGroup(frontRight, rearRight);
         frontLeft.configFactoryDefault();
-        frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
-        frontLeft.setSelectedSensorPosition(0); // LEFT IS WRONG DIRECTION BY DEFAULT
+        frontLeft.setNeutralMode(NeutralMode.Brake);
+
         rearLeft.configFactoryDefault();
+        rearLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
+        rearLeft.setSelectedSensorPosition(0); // LEFT IS WRONG DIRECTION BY DEFAULT
+        rearLeft.setNeutralMode(NeutralMode.Brake);
+
+        /**
+         * Encoder values:
+         * 3m -25273 / 24981
+         * 10ft -25759 / 25415
+         */
+
         //left = new SpeedControllerGroup(frontLeft, rearLeft);
         //this.robotDrive = new DifferentialDrive(left, right);
         // odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
@@ -101,6 +117,8 @@ public final class DriveTrain extends SubsystemBaseWrapper {
         // SmartDashboard.putNumber("Angular Velocity", getAngularVelocity());
         SmartDashboard.putNumber("Front Left Motor Volts", getLeftVolts());
         SmartDashboard.putNumber("Front Right Motor Volts", getRightVolts());
+        SmartDashboard.putNumber("leftEncoder", rearLeft.getSelectedSensorPosition());
+        SmartDashboard.putNumber("rightEncoder", rearRight.getSelectedSensorPosition());
         //System.out.println(this.getLeftDistanceMeters());
         //System.out.println(odometry.getPoseMeters().getTranslation().getX());
         //System.out.println(getRadians());
