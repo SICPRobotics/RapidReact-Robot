@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
+import frc.robot.commands.rumble.Rumbler;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.controllers.operator.OperatorController;
 import frc.robot.subsystems.CargoArm;
@@ -50,6 +51,7 @@ public final class RobotContainer {
      */
     public RobotContainer() {
         CameraServer.startAutomaticCapture();
+        Rumbler.setOperator(operator);
         driveTrain = new DriveTrain();
         cargoArm = new CargoArm();
         cargoIntake = new CargoIntake();
@@ -58,7 +60,7 @@ public final class RobotContainer {
 
             
         driveTrain.setDefaultCommand(
-            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
+            new DriveWithJoystick(driveTrain, this::getY, this::getX, joystick::getScale, false));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -88,7 +90,8 @@ public final class RobotContainer {
 
     public double getY() {
         double joystickY = joystick.getY();
-        double operatorY = operator.sticks.right.getY();
+        double operatorY = -operator.sticks.right.getY();
+       // System.out.println("Joystick: " + joystickY + " Operator: " + operatorY);
 
         if (Math.abs(joystickY) > Math.abs(operatorY)) {
             return joystickY;
