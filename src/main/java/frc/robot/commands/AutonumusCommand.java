@@ -45,25 +45,32 @@ public class AutonumusCommand extends CommandBase{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(version == 0){
-        if(this.timer.get() > this.waitTime){
-            this.driveTrain.cheesyDrive(0.4, 0);
+    
+    if(this.timer.get() < 13){
+        if(version == 0){
+            if(this.timer.get() > this.waitTime){
+                this.driveTrain.cheesyDrive(0.4, 0);
+            }
+            else if(this.timer.get() > this.waitTime + 5){
+                this.intake.setMotor(1);
+            }
+            
         }
-        else if(this.timer.get() > this.waitTime + 5){
-            this.intake.setMotor(1);
-        } 
-    }
-    else if(version == 2){
-        if(this.timer.get() > 2){
-            this.intake.setMotor(0);
-            this.driveTrain.cheesyDrive(-0.5, 0);
+        else if(version == 2){
+            if(this.timer.get() < 2){
+                this.intake.setMotor(1);
+            }
+            if else(this.timer.get() > 2 && this.timer.get() < 5){
+                this.intake.setMotor(0);
+                this.driveTrain.cheesyDrive(-0.5, 0);
+            }
         }
-    }
-    else if(version == 3){
-        this.intake.setMotor(1);
+        else{
+
+        }
     }
     else{
-
+        this.driveTrain.cheesyDrive(-1, 0);
     }
   }
 
