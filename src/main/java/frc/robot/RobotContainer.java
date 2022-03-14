@@ -17,12 +17,16 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.commands.AutonumusCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
+import frc.robot.commands.rumble.Rumbler;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.controllers.operator.OperatorController;
 import frc.robot.subsystems.CargoArm;
+import frc.robot.commands.MotorCommand;
+import frc.robot.controllers.joystick.Joystick;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
@@ -37,14 +41,15 @@ import frc.robot.subsystems.Pidgey;
  */
 public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final Joystick joystick = new Joystick(0);
-    private final OperatorController operator = new OperatorController(1);
+    private final Joystick joystick;
     private final DriveTrain driveTrain;
+    private final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
+    private final GsonSaver gsonSaver;
+    private final OperatorController operator = new OperatorController(1);
     private final CargoArm cargoArm;
     private final CargoIntake cargoIntake;
+    private SmartDashBoardClass<Double> autoVersion, autoDelay;
     private final Climber climber;
-    // private final SmartDashBoardClass<Double> intakevalue;
-
     private final Pidgey pidgey;
 
     /**
@@ -52,20 +57,38 @@ public final class RobotContainer {
      */
     public RobotContainer() {
         CameraServer.startAutomaticCapture();
+        Rumbler.setOperator(operator);
         driveTrain = new DriveTrain();
+        joystick = new Joystick(0);
+        gsonSaver = new GsonSaver();
         cargoArm = new CargoArm();
         cargoIntake = new CargoIntake();
+        autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
+        autoDelay = new SmartDashBoardClass<Double>("autoDelay", 0.0);
+        trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
         pidgey = new Pidgey();
 
             
         driveTrain.setDefaultCommand(
-            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
-            
-        
+            new DriveWithJoystick(driveTrain, this::getY, this::getX, joystick::getScale, false));
+
         // Configure the button bindings
         configureButtonBindings();
-        SmartDashboard.putNumber("Auton Chooser", 0);
+        //SmartDashboard.putNumber("Auton Chooser", 0);
+        // trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
+        //     new Translation2d(2,1),
+        //     new Translation2d(5, -1)
+        // ), 
+        // new Pose2d(new Translation2d(7,0), new Rotation2d(0)), 
+        // new TrajectoryConfig(4, 2), "test");
+        // trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
+        //     new Translation2d(1,2),
+        //     new Translation2d(3, 3)
+        // ), 
+        // new Pose2d(new Translation2d(7,0), new Rotation2d(0)),
+        //  new TrajectoryConfig(4, 2), "nottest");
+        //trajectoryGeneration.printTrajectory("test");
     }
 
     /**
@@ -76,17 +99,40 @@ public final class RobotContainer {
      */
     private void configureButtonBindings() {
         joystick.thumb.toggleWhenPressed(
-            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, true));
+            new DriveWithJoystick(driveTrain, this::getY, this::getX, joystick::getScale, true));
        
-        operator.buttons.RB.whileHeld(new MotorCommand(climber, -1));
-        operator.buttons.LB.whileHeld(new MotorCommand(climber,  1));
+        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.8));
+        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.8));
 
         operator.buttons.dPad.up.whileHeld(new SimpleArmCommand(cargoArm, 0.4));
         operator.buttons.dPad.down.whileHeld(new SimpleArmCommand(cargoArm, -0.4));
         cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.4), cargoArm));
 
-        operator.buttons.Y.whileHeld(new MotorCommand(cargoIntake,  1));
-        operator.buttons.A.whileHeld(new MotorCommand(cargoIntake, -1));
+        operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
+        operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
+    }
+
+    public double getY() {
+        double joystickY = joystick.getY();
+        double operatorY = -operator.sticks.right.getY();
+       // System.out.println("Joystick: " + joystickY + " Operator: " + operatorY);
+
+        if (Math.abs(joystickY) > Math.abs(operatorY)) {
+            return joystickY;
+        } else {
+            return operatorY;
+        }
+    }
+
+    public double getX() {
+        double joystickX = joystick.getX();
+        double operatorX = operator.sticks.right.getX();
+
+        if (Math.abs(joystickX) > Math.abs(operatorX)) {
+            return joystickX;
+        } else {
+            return operatorX;
+        }
     }
 
     // public void trajectory(TrajectoryGeneration trajectoryGeneration, DriveTrain driveTrain, Pose2d ){
@@ -96,7 +142,8 @@ public final class RobotContainer {
     // }
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
-        return null;
+        return new AutonumusCommand(driveTrain, cargoArm, cargoIntake, this.autoVersion.getValue().intValue(), this.autoDelay.getValue().doubleValue());
+        //return trajectoryGeneration.getTrajectoryCommand(driveTrain, "nottest");
     }
     
 }

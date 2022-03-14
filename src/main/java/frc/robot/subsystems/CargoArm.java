@@ -24,4 +24,6 @@ public class CargoArm extends SubsystemBaseWrapper implements MotorSubsystem{
     public void turnOff(){
         this.armMotor.set(0);
     }
+
+
 }

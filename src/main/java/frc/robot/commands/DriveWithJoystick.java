@@ -11,10 +11,11 @@ public final class DriveWithJoystick extends CommandBase {
     private final DoubleSupplier rotateValueGetter;
     private final DoubleSupplier adjustValueGetter;
     private final boolean isInverted;
+    //private final int controlSystem;
 
-    public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier adjustValueGetter) {
-        this(driveTrain, moveValueGetter, rotateValueGetter, adjustValueGetter, false);    
-    }
+    // public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier adjustValueGetter) {
+    //     this(driveTrain, moveValueGetter, rotateValueGetter, adjustValueGetter, false);    
+    // }
 
     public DriveWithJoystick(final DriveTrain driveTrain, final DoubleSupplier moveValueGetter, final DoubleSupplier rotateValueGetter, final DoubleSupplier scaleValueGetter, final boolean isInverted) {
         this.driveTrain = driveTrain;
@@ -22,6 +23,7 @@ public final class DriveWithJoystick extends CommandBase {
         this.rotateValueGetter = rotateValueGetter;
         this.adjustValueGetter = scaleValueGetter;
         this.isInverted = isInverted;
+        //this.controlSystem = controlSystem;
         addRequirements(driveTrain);
     }
 

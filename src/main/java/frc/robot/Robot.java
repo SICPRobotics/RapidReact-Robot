@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import java.nio.file.FileSystem;
+
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,7 +31,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    SmartDashboardValues.clear();
+    //SmartDashboardValues.clear();
     // UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
     // UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(1);
     // cam2.setResolution(320, 320);
@@ -56,6 +59,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     //robotContainer.generateTrajectory(SmartDashboard.getBoolean("Generate Trajectory", false));
     SmartDashboardValues.postAllValues();
+    //System.out.println(SmartDashboardValues.getValues()); 
     CommandScheduler.getInstance().run();
   }
 
