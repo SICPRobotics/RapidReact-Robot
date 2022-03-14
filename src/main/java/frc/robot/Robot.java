@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     //robotContainer.generateTrajectory(SmartDashboard.getBoolean("Generate Trajectory", false));
     SmartDashboardValues.postAllValues();
-    System.out.println(SmartDashboardValues.getValues()); 
+    //System.out.println(SmartDashboardValues.getValues()); 
     CommandScheduler.getInstance().run();
   }
 
