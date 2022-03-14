@@ -33,9 +33,8 @@ import frc.robot.commands.rumble.Rumbler;
  * the DriveTrain, aka the thing that moves the robot
  */
 public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsystem{
-    private final DifferentialDriveOdometry odometry;
-    public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23.5));
-    private final ChassisSpeeds chassisSpeeds;
+    private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d());
+    public final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(21.5));
     private final Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0); //SPI.Port.kMXP ?
     private final WPI_TalonSRX frontRight = new WPI_TalonSRX(Constants.DriveTrain.FRONT_RIGHT_MOTOR_ID);
     private final WPI_TalonSRX rearRight = new WPI_TalonSRX(Constants.DriveTrain.REAR_RIGHT_MOTOR_ID);
