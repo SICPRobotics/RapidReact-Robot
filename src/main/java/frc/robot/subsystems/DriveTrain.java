@@ -16,6 +16,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -24,8 +26,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.SubsystemBaseWrapper;
-import frc.robot.WillowMath;
-import frc.robot.subsystems.MotorSubsystem;
+import frc.robot.commands.rumble.Rumbler;
 
 /**
  * the DriveTrain, aka the thing that moves the robot
@@ -50,21 +51,32 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         gyro.calibrate();
 
         frontRight.configFactoryDefault();
-        frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
-        frontRight.setSelectedSensorPosition(0);
         frontRight.setNeutralMode(NeutralMode.Brake);
 
         rearRight.configFactoryDefault();
+        rearRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
+        rearRight.setSelectedSensorPosition(0);
+        rearRight.setNeutralMode(NeutralMode.Brake);
+
+        //right = new SpeedControllerGroup(frontRight, rearRight);
         frontLeft.configFactoryDefault();
-        frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
-        frontLeft.setSelectedSensorPosition(0); // LEFT IS WRONG DIRECTION BY DEFAULT
         frontLeft.setNeutralMode(NeutralMode.Brake);
 
         rearLeft.configFactoryDefault();
-        odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
-        chassisSpeeds = new ChassisSpeeds(0,0,0);
-        this.robotDrive.setSafetyEnabled(false);
-        //frontLeft.neutralOutput();
+        rearLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 30);
+        rearLeft.setSelectedSensorPosition(0); // LEFT IS WRONG DIRECTION BY DEFAULT
+        rearLeft.setNeutralMode(NeutralMode.Brake);
+
+        /**
+         * Encoder values:
+         * 3m -25273 / 24981
+         * 10ft -25759 / 25415
+         */
+
+        //left = new SpeedControllerGroup(frontLeft, rearLeft);
+        //this.robotDrive = new DifferentialDrive(left, right);
+        // odometry = new DifferentialDriveOdometry(new Rotation2d(Math.toRadians(gyro.getAngle())), new Pose2d(0, 0, new Rotation2d()));
+        // chassisSpeeds = new ChassisSpeeds(0,0,0);
         //reset();
     }
     public void setMotor(double value) {
@@ -157,11 +169,17 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         SmartDashboard.putNumber("Left Side Volt Difference", this.frontLeft.getMotorOutputVoltage() - this.rearLeft.getMotorOutputVoltage());
         SmartDashboard.putNumber("Right Side Volt Difference", this.frontRight.getMotorOutputVoltage() - this.rearRight.getMotorOutputVoltage());
         SmartDashboard.putString("Saved Pose", this.savedPose.toString());
+        SmartDashboard.putNumber("leftEncoder", rearLeft.getSelectedSensorPosition());
+        SmartDashboard.putNumber("rightEncoder", rearRight.getSelectedSensorPosition());
         //System.out.println(this.getLeftDistanceMeters());
 
         //System.out.println(odometry.getPoseMeters().getTranslation().getX());
         //System.out.println(getRadians());
         //System.out.println(this.getPose().toString());
+
+        if (RobotController.getBatteryVoltage() < 7.5) {
+            Rumbler.rumble(0.5, 0.1);
+        }
     }
     // public double getVoltsToRight(){
     //     return SmartDashboard.getNumber("Right Side Volts", 0);

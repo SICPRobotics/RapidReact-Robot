@@ -6,33 +6,24 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-import java.util.List;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 //simport edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.AutonumusCommand;
 import frc.robot.commands.DriveWithJoystick;
-import frc.robot.commands.NudgeServo;
+import frc.robot.commands.MotorCommand;
+import frc.robot.commands.arm.SimpleArmCommand;
+import frc.robot.commands.rumble.Rumbler;
+import frc.robot.controllers.joystick.Joystick;
 import frc.robot.controllers.operator.OperatorController;
 import frc.robot.subsystems.CargoArm;
-import frc.robot.commands.SimpleArmCommand;
 import frc.robot.commands.MotorCommand;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.subsystems.CargoIntake;
@@ -60,11 +51,12 @@ public final class RobotContainer {
     private final Climber climber;
     private final Pidgey pidgey;
 
-
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        CameraServer.startAutomaticCapture();
+        Rumbler.setOperator(operator);
         driveTrain = new DriveTrain();
         joystick = new Joystick(0);
         gsonSaver = new GsonSaver();
@@ -78,24 +70,23 @@ public final class RobotContainer {
 
             
         driveTrain.setDefaultCommand(
-            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
-            
-        
+            new DriveWithJoystick(driveTrain, this::getY, this::getX, joystick::getScale, false));
+
         // Configure the button bindings
         configureButtonBindings();
         //SmartDashboard.putNumber("Auton Chooser", 0);
-        trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
-            new Translation2d(2,1),
-            new Translation2d(5, -1)
-        ), 
-        new Pose2d(new Translation2d(7,0), new Rotation2d(0)), 
-        new TrajectoryConfig(4, 2), "test");
-        trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
-            new Translation2d(1,2),
-            new Translation2d(3, 3)
-        ), 
-        new Pose2d(new Translation2d(7,0), new Rotation2d(0)),
-         new TrajectoryConfig(4, 2), "nottest");
+        // trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
+        //     new Translation2d(2,1),
+        //     new Translation2d(5, -1)
+        // ), 
+        // new Pose2d(new Translation2d(7,0), new Rotation2d(0)), 
+        // new TrajectoryConfig(4, 2), "test");
+        // trajectoryGeneration.generate(new Pose2d(new Translation2d(0,0), new Rotation2d(0)), List.of(
+        //     new Translation2d(1,2),
+        //     new Translation2d(3, 3)
+        // ), 
+        // new Pose2d(new Translation2d(7,0), new Rotation2d(0)),
+        //  new TrajectoryConfig(4, 2), "nottest");
         //trajectoryGeneration.printTrajectory("test");
     }
 
@@ -107,16 +98,40 @@ public final class RobotContainer {
      */
     private void configureButtonBindings() {
         joystick.thumb.toggleWhenPressed(
-            new DriveWithJoystick(driveTrain, joystick::getY, joystick::getX, joystick::getScale, false));
+            new DriveWithJoystick(driveTrain, this::getY, this::getX, joystick::getScale, true));
        
-        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -1));
-        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  1));
+        operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.8));
+        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.8));
 
         operator.buttons.dPad.up.whileHeld(new SimpleArmCommand(cargoArm, 0.4));
         operator.buttons.dPad.down.whileHeld(new SimpleArmCommand(cargoArm, -0.4));
+        cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.4), cargoArm));
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
         operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
+    }
+
+    public double getY() {
+        double joystickY = joystick.getY();
+        double operatorY = -operator.sticks.right.getY();
+       // System.out.println("Joystick: " + joystickY + " Operator: " + operatorY);
+
+        if (Math.abs(joystickY) > Math.abs(operatorY)) {
+            return joystickY;
+        } else {
+            return operatorY;
+        }
+    }
+
+    public double getX() {
+        double joystickX = joystick.getX();
+        double operatorX = operator.sticks.right.getX();
+
+        if (Math.abs(joystickX) > Math.abs(operatorX)) {
+            return joystickX;
+        } else {
+            return operatorX;
+        }
     }
 
     // public void trajectory(TrajectoryGeneration trajectoryGeneration, DriveTrain driveTrain, Pose2d ){

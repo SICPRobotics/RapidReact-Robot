@@ -1,14 +1,21 @@
 package frc.robot.controllers.operator;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.SubsystemBaseWrapper;
+
+import java.util.concurrent.ScheduledExecutorService;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 
-public class OperatorController {
+public class OperatorController extends SubsystemBaseWrapper {
     public final Buttons buttons;
     public final Sticks sticks;
     public final Triggers triggers;
 
     private final XboxController controller;
+
     public OperatorController(int port) {
         controller = new XboxController(port);
         
@@ -17,21 +24,16 @@ public class OperatorController {
         triggers = new Triggers(controller);
     }
 
-    /*
-    public double getRightTriggerAxis() {
-        return controller.getTriggerAxis(Hand.kRight);
-    }
-
-    public double getLeftTriggerAxis() {
-        return controller.getTriggerAxis(Hand.kLeft);
-    }
-    */
-    
     public void rumbleRight(double value) {
         controller.setRumble(RumbleType.kRightRumble, value);
     }
 
     public void rumbleLeft(double value) {
         controller.setRumble(RumbleType.kLeftRumble, value);
+    }
+
+    public void endRumble() {
+        rumbleLeft(0);
+        rumbleRight(0);
     }
 }

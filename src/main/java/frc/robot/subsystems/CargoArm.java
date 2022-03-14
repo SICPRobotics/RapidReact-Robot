@@ -13,8 +13,9 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
+import frc.robot.SubsystemBaseWrapper;
 
-public class CargoArm implements MotorSubsystem{
+public class CargoArm extends SubsystemBaseWrapper implements MotorSubsystem{
 
     private final CANSparkMax armMotor;
 

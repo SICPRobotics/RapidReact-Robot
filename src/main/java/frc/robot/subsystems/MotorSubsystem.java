@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  */
 public interface MotorSubsystem extends Subsystem {
     public void setMotor(double value);
-    //public void turnOn(double velocity);
     public void turnOff();
+    default public boolean canTurn(double direction) {
+        return true;
+    }
 }

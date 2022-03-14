@@ -25,10 +25,10 @@ public final class Constants {
     }
 
     public final class DriveTrain {
-        public static final int FRONT_RIGHT_MOTOR_ID = 3;
-        public static final int FRONT_LEFT_MOTOR_ID = 1;
-        public static final int REAR_RIGHT_MOTOR_ID = 2;
-        public static final int REAR_LEFT_MOTOR_ID = 0;
+        public static final int FRONT_RIGHT_MOTOR_ID = 0;
+        public static final int FRONT_LEFT_MOTOR_ID = 2;
+        public static final int REAR_RIGHT_MOTOR_ID = 1;
+        public static final int REAR_LEFT_MOTOR_ID = 3;
         public static final int WHEEL_Diameter_INCHES = 6;
         public static final double COUNTS_PER_ROTAION = 4096;
         public static final double X_AXIS_DEADZONE_RANGE = 0.005;
@@ -49,10 +49,6 @@ public final class Constants {
             public static final double D = 0; // Derivative gain for the drive train 
         }
     }
-    
-    public final class Climber{
-        public static final int CLIMBER_MOTOR_ID = 4;
-    }
     public final class Joystick{
         public static final int X_AXIS = 0;
         public static final int Y_AXIS = 1;
@@ -62,6 +58,10 @@ public final class Constants {
     public final class Arm{
         public static final int INTAKE_MOTOR_ID = 8;
         public static final int ARM_MOTOR_ID = 5;
+    }
+    public static class Climber{
+        public static final int CLIMBER_MOTOR_ID = 4;
+        public static final int CLIMBER_SERVO_ID = 4;
     }
 
 }
