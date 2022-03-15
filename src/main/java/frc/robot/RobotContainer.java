@@ -20,7 +20,9 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.AutonumusCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
+import frc.robot.commands.arm.DownArmCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
+import frc.robot.commands.arm.UpArmCommand;
 import frc.robot.commands.rumble.Rumbler;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.controllers.operator.OperatorController;
@@ -104,8 +106,8 @@ public final class RobotContainer {
         operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.8));
         operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.8));
 
-        operator.buttons.dPad.up.whileHeld(new SimpleArmCommand(cargoArm, 0.4));
-        operator.buttons.dPad.down.whileHeld(new SimpleArmCommand(cargoArm, -0.4));
+        operator.buttons.dPad.up.whileHeld(new UpArmCommand(cargoArm, pidgey));
+        operator.buttons.dPad.down.whileHeld(new DownArmCommand(cargoArm, pidgey));
         cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.4), cargoArm));
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
