@@ -22,14 +22,14 @@ public class GsonSaver {
     // public static final String TRAJECTORY_CONFIG_PATH = "/Jsons/TrajectoryConfigs/";
     // public static final String OTHER_PATH = "/Jsons/Other/";
     private Gson gson;
-    private String directory;
+    public static String directory = Filesystem.getDeployDirectory().toPath().toString();
     private ArrayList<String> names;
 
     public GsonSaver(){ 
         names = new ArrayList<String>();
         Filesystem.getLaunchDirectory().mkdir();
         Filesystem.getDeployDirectory().mkdir();
-        directory = Filesystem.getDeployDirectory().toPath().toString();
+        //directory = Filesystem.getDeployDirectory().toPath().toString();
         System.out.println(directory);
         Filesystem.getDeployDirectory().setExecutable(true, false);
         Filesystem.getDeployDirectory().setReadable(true, false);
@@ -40,11 +40,14 @@ public class GsonSaver {
         gson = new GsonBuilder()
                     .generateNonExecutableJson()
                     .serializeNulls()
-                    .setPrettyPrinting()    
+                    .setPrettyPrinting()     
                     .create();
     }
     public void setBuild(GsonBuilder builder){
         gson = builder.create();
+    }
+    public Gson getGson() {
+        return gson;
     }
     public ArrayList<String> getNames() {
         return names;

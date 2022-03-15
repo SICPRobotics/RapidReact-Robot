@@ -7,6 +7,8 @@
 
 package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 //simport edu.wpi.first.wpilibj.XboxController.Button;
@@ -53,6 +55,7 @@ public final class RobotContainer {
     private SmartDashBoardClass<Double> autoVersion, autoDelay;
     private final Climber climber;
     private final Pidgey pidgey;
+    private final DashBoardOutput dashBoardOutput;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -70,6 +73,7 @@ public final class RobotContainer {
         trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
         pidgey = new Pidgey();
+        dashBoardOutput = new DashBoardOutput(NetworkTableInstance.getDefault().getEntry("auto"), gsonSaver);
 
             
         driveTrain.setDefaultCommand(
