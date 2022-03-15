@@ -6,14 +6,14 @@ import frc.robot.subsystems.CargoArm;
 
 public class SimpleArmCommand extends CommandBase {
     private final CargoArm arm;
-    private final double value;
-    public SimpleArmCommand(CargoArm arm, double value) {
+    private final double amount;
+    private final Timer timer;
+    public SimpleArmCommand(CargoArm arm, double amount) {
         this.arm = arm;
         addRequirements(arm);
         this.amount = amount;
+        this.timer = new Timer();
     }
-
-    @Override
     public void initialize () {
         timer.reset();
         timer.start();

@@ -21,6 +21,7 @@ import frc.robot.commands.AutonumusCommand;
 import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
+import frc.robot.commands.arm.UpArmCommand;
 import frc.robot.commands.rumble.Rumbler;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.controllers.operator.OperatorController;
@@ -48,7 +49,7 @@ public final class RobotContainer {
     private final OperatorController operator = new OperatorController(1);
     private final CargoArm cargoArm;
     private final CargoIntake cargoIntake;
-    private SmartDashBoardClass<Double> autoVersion, autoDelay;
+    private SmartDashBoardClass<Double> autoVersion, autoDelay, p, i;
     private final Climber climber;
     private final Pidgey pidgey;
 
@@ -65,6 +66,8 @@ public final class RobotContainer {
         cargoIntake = new CargoIntake();
         autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
         autoDelay = new SmartDashBoardClass<Double>("autoDelay", 0.0);
+        p = new SmartDashBoardClass<Double>("p", Constants.Arm.P);
+        i = new SmartDashBoardClass<Double>("i", Constants.Arm.I);
         trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
         pidgey = new Pidgey();
@@ -106,6 +109,7 @@ public final class RobotContainer {
 
         operator.buttons.dPad.up.whileHeld(new SimpleArmCommand(cargoArm, 0.4));
         operator.buttons.dPad.down.whileHeld(new SimpleArmCommand(cargoArm, -0.4));
+        operator.buttons.dPad.left.whenPressed(new UpArmCommand(cargoArm, pidgey, p::getValue, i::getValue));
         cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.4), cargoArm));
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
