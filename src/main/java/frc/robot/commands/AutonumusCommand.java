@@ -38,7 +38,7 @@ public class AutonumusCommand extends CommandBase{
     //       this.driveTrain.cheesyDrive(0.2, 0);
     //   }
         if(version == 1){
-            this.intake.setMotor(1);
+            this.intake.setMotor(0.8);
         }
   }
 
@@ -47,9 +47,9 @@ public class AutonumusCommand extends CommandBase{
   public void execute() {
         double time = this.timer.get();
         if(version == 0){
-
+            // Waits then spits out
             if(time > this.waitTime && time < (this.waitTime + 5)){
-                this.driveTrain.cheesyDrive(-0.4, 0);
+                this.driveTrain.cheesyDrive(0.4, 0);
             }
             else if(time > (this.waitTime + 5)){
                 this.intake.setMotor(1);
@@ -57,6 +57,7 @@ public class AutonumusCommand extends CommandBase{
             
         }
         else if(version == 2){
+            // Spit out ball & back up
             if(time < 2){
                 this.intake.setMotor(1);
             }
@@ -68,14 +69,19 @@ public class AutonumusCommand extends CommandBase{
             }
             else if(time > 5 && time < 9){
                 this.intake.setMotor(0);
-                this.driveTrain.cheesyDrive(0.5, 0);
+                this.driveTrain.cheesyDrive(-0.5, 0);
             }
             else{
                 this.driveTrain.cheesyDrive(0, 0);
             }
         }
-        else{
-
+        else if (version == 3){
+            // Just back up
+            if (time < 5) {
+                this.driveTrain.cheesyDrive(-0.5, 0);
+            } else {
+                driveTrain.cheesyDrive(0, 0);
+            }
         }
     
   }
