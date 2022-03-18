@@ -106,7 +106,7 @@ public final class RobotContainer {
             new DriveWithJoystick(driveTrain, this::getY, this::getX, joystick::getScale, true));
        
         operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.8));
-        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  0.8));
+        operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  1));
 
         operator.buttons.dPad.up.whileHeld(new UpArmCommand(cargoArm, pidgey));
         operator.buttons.dPad.down.whileHeld(new DownArmCommand(cargoArm, pidgey));
