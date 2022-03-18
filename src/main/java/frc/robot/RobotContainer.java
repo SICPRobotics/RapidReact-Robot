@@ -115,7 +115,7 @@ public final class RobotContainer {
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
         operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
 
-        operator.buttons.B.whenPressed(new ResetClimber(climber));
+        //operator.buttons.B.whenPressed(new ResetClimber(climber));
     }
 
     public double getY() {
