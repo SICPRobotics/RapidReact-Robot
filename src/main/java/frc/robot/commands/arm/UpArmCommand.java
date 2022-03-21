@@ -11,7 +11,7 @@ public class UpArmCommand extends SmartArmCommand {
 
     @Override
     public double getOutput() {
-        if (error > 0.8) {
+        if (error > 0.6) {
             return 1;
         } else {
             return 0.4;

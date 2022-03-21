@@ -110,7 +110,7 @@ public final class RobotContainer {
 
         operator.buttons.dPad.up.whileHeld(new UpArmCommand(cargoArm, pidgey));
         operator.buttons.dPad.down.whileHeld(new DownArmCommand(cargoArm, pidgey));
-        cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.4), cargoArm));
+        cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.5), cargoArm));
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
         operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
