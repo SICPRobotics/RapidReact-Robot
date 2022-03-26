@@ -33,6 +33,7 @@ import frc.robot.commands.MotorCommand;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.ClimberPivot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.Pidgey;
@@ -54,6 +55,7 @@ public final class RobotContainer {
     private final CargoIntake cargoIntake;
     private SmartDashBoardClass<Double> autoVersion, autoDelay;
     private final Climber climber;
+    private final ClimberPivot climberPivot;
     private final Pidgey pidgey;
 
     /**
@@ -71,6 +73,7 @@ public final class RobotContainer {
         autoDelay = new SmartDashBoardClass<Double>("autoDelay", 0.0);
         trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
+        climberPivot = new ClimberPivot();
         pidgey = new Pidgey();
 
             
@@ -115,6 +118,8 @@ public final class RobotContainer {
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
         operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
 
+        operator.buttons.B.whileHeld(new MotorCommand(climberPivot, -1));
+        operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 1));
         //operator.buttons.B.whenPressed(new ResetClimber(climber));
     }
 

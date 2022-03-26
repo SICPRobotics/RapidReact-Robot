@@ -59,12 +59,11 @@ public final class Constants {
         public static final int INTAKE_MOTOR_ID = 8;
         public static final int ARM_MOTOR_ID = 5;
         public static final double ARM_DEAD_ZONE = 0.01;
-        public static final double P = 0.2; // Proportionality Constant for the power to the Arm motor vs mesured error(temp value)
-        public static final double I = 1; // Integral Constant for the integral of the power to the Arm motor vs the mesured error(temp value)
     }
     public static class Climber{
         public static final int CLIMBER_MOTOR_ID = 4;
         public static final int CLIMBER_SERVO_ID = 4;
+        public static final int PIVOT_MOTOR_ID = 6;
     }
 
 }
