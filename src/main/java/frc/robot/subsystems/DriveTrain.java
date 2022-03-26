@@ -108,6 +108,11 @@ public final class DriveTrain extends SubsystemBaseWrapper {
     //     right.setVoltage(-rightVolts);
     //     this.robotDrive.feed();
     // }
+
+    public void diffDrive(double leftVelocity, double rightVelocity) {
+        left.set(leftVelocity);
+        right.set(rightVelocity);
+    }
     
     public void periodic() {
         //updatePose();

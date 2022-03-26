@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import com.google.gson.Gson;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -17,9 +19,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
+import frc.robot.commands.drive.DriveWithJoystick;
 import frc.robot.commands.rumble.Rumbler;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.controllers.operator.OperatorController;
@@ -38,13 +40,14 @@ import frc.robot.subsystems.Pidgey;
  */
 public final class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final Joystick joystick = new Joystick(0);
-    private final OperatorController operator = new OperatorController(1);
-    private final DriveTrain driveTrain;
-    private final CargoArm cargoArm;
-    private final CargoIntake cargoIntake;
-    private final Climber climber;
-    private final Pidgey pidgey;
+    public static final Gson gson = new Gson();
+    public final Joystick joystick = new Joystick(0);
+    public final OperatorController operator = new OperatorController(1);
+    public final DriveTrain driveTrain;
+    public final CargoArm cargoArm;
+    public final CargoIntake cargoIntake;
+    public final Climber climber;
+    public final Pidgey pidgey;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

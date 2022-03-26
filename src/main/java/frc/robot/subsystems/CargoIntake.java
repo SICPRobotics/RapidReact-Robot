@@ -17,4 +17,15 @@ public class CargoIntake extends SubsystemBase implements MotorSubsystem{
     public void turnOff(){
         this.intakeMotor.set(0);
     }
+    public void intakeIn() {
+        setMotor(1);
+    }
+
+    public void intakeOut() {
+        setMotor(-0.8);
+    }
+
+    public void intakeOff() {
+        setMotor(0);
+    }
 }
