@@ -49,4 +49,10 @@ public final class Constants {
         public static final int CLIMBER_SERVO_ID = 4;
     }
 
+    public static class Auto{
+        public static final double DIST_DRIVE_ACCEPTED_ERROR = 2000;
+        public static final double TURN_ACCEPTED_ERROR = 1000;
+    }
+
+
 }

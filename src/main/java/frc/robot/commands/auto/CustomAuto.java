@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotContainer;
 import frc.robot.commands.arm.DownArmCommand;
 import frc.robot.commands.arm.UpArmCommand;
+import frc.robot.commands.drive.DriveDistance;
+import frc.robot.commands.drive.TurnRelative;
 
 public class CustomAuto extends CommandBase {
 
@@ -80,6 +82,12 @@ public class CustomAuto extends CommandBase {
             _distance = instruction.get("distance").getAsDouble();
         }
         final double distance = _distance;
+
+        double _rotation = 0;
+        if(instruction.has("rotation")){
+            _rotation = instruction.get("rotation").getAsDouble();
+        }
+        final double rotation = _rotation;
         
         String type = instruction.get("type").getAsString();
         Runnable start = () -> {};
@@ -93,15 +101,16 @@ public class CustomAuto extends CommandBase {
             double right = instruction.get("right").getAsDouble();
             execute = () -> robot.driveTrain.diffDrive(left, right);
         } else if (type.equals("driveDistance")) {
-            // TODO
+            execute = () -> new DriveDistance(robot.driveTrain, distance, speed);
         } else if (type.equals("driveDuration")) {
             execute = () -> robot.driveTrain.cheesyDrive(speed, 0);
         } else if (type.equals("wait")) {
             // Do nothing
         } else if (type.equals("relativeTurn")) {
-
+            execute = () -> new TurnRelative(robot.driveTrain, robot.pidgey, rotation);
         } else if (type.equals("turnToHeading")) {
-
+            double heading = instruction.get("heading").getAsDouble();
+            execute = () -> new TurnRelative(robot.driveTrain, robot.pidgey, heading - robot.pidgey.getRobotAbsoluteHeading());
         } else if (type.equals("armUp")) {
             return new UpArmCommand(robot.cargoArm, robot.pidgey);
         } else if (type.equals("armDown")) {
@@ -129,7 +138,7 @@ public class CustomAuto extends CommandBase {
         final CustomAutoStep step = steps.get(index);
         final CustomAutoStep next = steps.size() - 1 > index ? steps.get(index + 1) : null;
 
-        if (timer.get() > step.isFinished.apply() {
+        if (timer.get() > step.isFinished.apply()) {
             index++;
             if (next != null) {
                 next.start.run();

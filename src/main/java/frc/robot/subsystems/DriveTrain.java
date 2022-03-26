@@ -136,6 +136,12 @@ public final class DriveTrain extends SubsystemBaseWrapper {
             Rumbler.rumble(0.5, 0.1);
         }
     }
+    public double getRightDistanceRaw(){
+        return frontRight.getSelectedSensorPosition();
+    }
+    public double getLeftDistanceRaw(){
+        return frontLeft.getSelectedSensorPosition();
+    }
     // public double getRightDistanceMeters(){
     //     return ((double)(frontRight.getSelectedSensorPosition()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * Constants.DriveTrain.WHEEL_CIRCUMFRANCE;
     // }
