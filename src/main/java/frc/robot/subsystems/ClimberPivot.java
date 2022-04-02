@@ -2,17 +2,18 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import frc.robot.Constants;
 import frc.robot.SubsystemBaseWrapper;
 
 public class ClimberPivot extends SubsystemBaseWrapper implements MotorSubsystem {
 
-    private TalonSRX pivotMotor;
+    private TalonFX pivotMotor;
 
 
     public ClimberPivot(){
-        this.pivotMotor = new TalonSRX(Constants.Climber.PIVOT_MOTOR_ID);
+        this.pivotMotor = new TalonFX(Constants.Climber.PIVOT_MOTOR_ID);
     }
 
 

@@ -37,11 +37,14 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
 
     @Override
     public boolean canTurn(double direction) {
-        if (direction > 0) {
-            return getEncoderPosition() < maxEncoderHeight;
-        } else {
-            return getEncoderPosition() > 0;
-        }
+        
+        return true;
+        
+        // if (direction > 0) {
+        //     return getEncoderPosition() < maxEncoderHeight;
+        // } else {
+        //     return getEncoderPosition() > 0;
+        // }
     }
 
     @Override
