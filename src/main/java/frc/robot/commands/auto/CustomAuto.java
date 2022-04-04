@@ -18,52 +18,53 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotContainer;
 import frc.robot.commands.arm.DownArmCommand;
 import frc.robot.commands.arm.UpArmCommand;
 import frc.robot.commands.drive.DriveDistance;
-import frc.robot.commands.drive.TurnRelative;
+import frc.robot.commands.drive.TurnTo;
+
+import static frc.robot.RobotContainer.*;
 
 public class CustomAuto extends CommandBase {
-
-    private List<CustomAutoStep> steps = new ArrayList<CustomAutoStep>();
-    private int index = 0;
-    private double currentStepStart = 0;
-    private double currentStepEnd = 0;
-    private Timer timer = new Timer();
+    private List<Command> commands = new ArrayList<Command>();
+    private final Timer timer = new Timer();
     private RobotContainer robot;
-    private CustomAutoState state;
+    private int index = 0;
 
     public CustomAuto(RobotContainer container) {
         this.robot = container;
+        addRequirements(robot.driveTrain, robot.cargoArm, robot.cargoIntake);
     }
 
     @Override
     public void initialize() {
-        index = 0;
+        robot.pidgey.resetRobotHeading();
         timer.reset();
         timer.start();
 
-        state = CustomAutoState.createDefault();
-
         // Fetch and parse auto code on command start.
-        NetworkTable autoTable = NetworkTableInstance.getDefault().getTable("WolfbyteAuto");
-        String selectedAuto = autoTable.getEntry("SelectedAuto").getString("");
-        String autosString = autoTable.getEntry("Autos").getString("{}");
-        JsonObject autos = JsonParser.parseString(autosString).getAsJsonObject();
-        JsonArray instructions = autos.get(selectedAuto).getAsJsonArray();
+        NetworkTable autoTable = NetworkTableInstance.getDefault().getTable("Wolfbyte");
+        String autoString = autoTable.getEntry("auto").getString("{instructions:[]}");
+        System.out.println(autoString);
+        JsonElement auto = gson.fromJson(autoString, JsonObject.class);
+        JsonArray instructions = auto.getAsJsonObject().get("instructions").getAsJsonArray();
         
-        double time = 0;
         for (JsonElement instruction : instructions) {
-            CustomAutoStep step = parseCustomAutoStep(instruction.getAsJsonObject(), time);
-            steps.add(step);
-            time = step.endTime;
+            commands.add(parseCustomAutoStep(instruction.getAsJsonObject()));
+        }
+
+        index = 0;
+        if (commands.size() > 0) {
+            commands.get(0).initialize();
         }
     }
 
-    private Command parseCustomAutoStep(JsonObject instruction, double startTime) {
+    private Command parseCustomAutoStep(JsonObject instruction) {
         // Parse args:
         double _duration = 1;
         if (instruction.has("duration")) {
@@ -93,24 +94,23 @@ public class CustomAuto extends CommandBase {
         Runnable start = () -> {};
         Runnable execute = () -> {};
         Runnable end = () -> {};
-        BooleanSupplier isFinished = () -> state.time > duration;
-        List<Subsystem> requirements = new ArrayList<Subsystem>();
+        BooleanSupplier isFinished = () -> this.timer.get() > duration;
 
         if (type.equals("diffDrive")) {
             double left = instruction.get("left").getAsDouble();
             double right = instruction.get("right").getAsDouble();
             execute = () -> robot.driveTrain.diffDrive(left, right);
         } else if (type.equals("driveDistance")) {
-            execute = () -> new DriveDistance(robot.driveTrain, distance, speed);
+            return new DriveDistance(robot.driveTrain, distance, speed);
         } else if (type.equals("driveDuration")) {
             execute = () -> robot.driveTrain.cheesyDrive(speed, 0);
         } else if (type.equals("wait")) {
             // Do nothing
         } else if (type.equals("relativeTurn")) {
-            execute = () -> new TurnRelative(robot.driveTrain, robot.pidgey, rotation);
+            return new TurnTo(robot.driveTrain, robot.pidgey, rotation);
         } else if (type.equals("turnToHeading")) {
             double heading = instruction.get("heading").getAsDouble();
-            execute = () -> new TurnRelative(robot.driveTrain, robot.pidgey, heading - robot.pidgey.getRobotAbsoluteHeading());
+            return new TurnTo(robot.driveTrain, robot.pidgey, heading);
         } else if (type.equals("armUp")) {
             return new UpArmCommand(robot.cargoArm, robot.pidgey);
         } else if (type.equals("armDown")) {
@@ -126,35 +126,32 @@ public class CustomAuto extends CommandBase {
             }
         }
 
-        return new FunctionalCommand(start, execute, b -> end.run(), isFinished, requirements.toArray(Subsystem[]::new));
+        return new FunctionalCommand(start, execute, b -> end.run(), isFinished);
     }
 
     @Override
     public void execute() {
-        if (isFinished) {
+        if (isFinished()) {
             return;
         }
-        
-        final CustomAutoStep step = steps.get(index);
-        final CustomAutoStep next = steps.size() - 1 > index ? steps.get(index + 1) : null;
 
-        if (timer.get() > step.isFinished.apply()) {
+        Command current = commands.get(index);
+
+        if (current.isFinished()) {
+            System.out.println("Next auto step");
+            timer.reset();
             index++;
-            if (next != null) {
-                next.start.run();
-            } else {
-                isFinished = true;
+            if (index < commands.size()) {
+                commands.get(index).initialize();
             }
-        } else if (timer.get() < step.startTime) {
-            System.out.println("Invalid state on auto");
         } else {
-            step.execute.accept(timer.get() - step.endTime);
+            //System.out.println("Ran step " + index);
+            current.execute();
         }
     }
 
-    public boolean isFinished = false;
+    @Override
     public boolean isFinished() {
-        return isFinished;
+        return index >= commands.size();
     }
-
 }

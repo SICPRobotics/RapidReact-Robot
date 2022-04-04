@@ -7,37 +7,43 @@ import frc.robot.subsystems.DriveTrain;
 public class DriveDistance extends CommandBase {
     private final DriveTrain driveTrain;
     private final double distance, speed;
-    private double distanceError;
+    private double startLeft, startRight;
     public DriveDistance(DriveTrain driveTrain, double distance, double speed) {
         this.driveTrain = driveTrain;
         this.distance = distance;
         this.speed = speed;
-        this.distanceError = distance;
     }
 
+    private double getLeft() {
+        return driveTrain.getLeftDistanceRaw() - startLeft;
+    }
 
-
+    private double getRight() {
+        return driveTrain.getRightDistanceRaw() - startRight;
+    }
 
     @Override
     public void initialize() {
         this.driveTrain.diffDrive(speed, speed);
+        startLeft = driveTrain.getLeftDistanceRaw();
+        startRight = driveTrain.getRightDistanceRaw();
     }
     @Override
     public void execute() {
-        distanceError = distance - ((driveTrain.getLeftDistanceRaw() + driveTrain.getRightDistanceRaw()) / 2);
-        if(driveTrain.getLeftDistanceRaw() - driveTrain.getRightDistanceRaw() > Constants.Auto.DIST_DRIVE_ACCEPTED_ERROR){
-            this.driveTrain.diffDrive(speed - 0.05, speed + 0.05);
+        if(getRight() - getLeft() > Constants.Auto.DIST_DRIVE_ACCEPTED_ERROR){
+            this.driveTrain.diffDrive(speed + 0.1, speed - 0.1);
         }
-        else if(driveTrain.getLeftDistanceRaw() - driveTrain.getRightDistanceRaw() < -Constants.Auto.DIST_DRIVE_ACCEPTED_ERROR){
-            this.driveTrain.diffDrive(speed + 0.05, speed - 0.05);
+        else if(getRight() - getLeft() < -Constants.Auto.DIST_DRIVE_ACCEPTED_ERROR){
+            this.driveTrain.diffDrive(speed - 0.1, speed + 0.1);
         }
         else{
             this.driveTrain.diffDrive(speed, speed);
         }
+        System.out.println("Avg: " + ((getLeft() + getRight()) / 2) + " distance: " + distance);
     }
     @Override
     public boolean isFinished() {
-        return distanceError < Constants.Auto.DIST_DRIVE_ACCEPTED_ERROR;
+        return Math.abs((getLeft() + getRight()) / 2) >= distance;
     }
     @Override
     public void end(boolean interrupted) {

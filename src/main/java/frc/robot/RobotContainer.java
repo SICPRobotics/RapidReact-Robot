@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
+import frc.robot.commands.auto.CustomAuto;
 import frc.robot.commands.drive.DriveWithJoystick;
 import frc.robot.commands.rumble.Rumbler;
 import frc.robot.controllers.joystick.Joystick;
@@ -121,7 +122,7 @@ public final class RobotContainer {
     // }
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
-        return null;
+        return new CustomAuto(this);
     }
     
 }

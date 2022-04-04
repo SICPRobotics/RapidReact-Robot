@@ -137,10 +137,10 @@ public final class DriveTrain extends SubsystemBaseWrapper {
         }
     }
     public double getRightDistanceRaw(){
-        return frontRight.getSelectedSensorPosition();
+        return -rearRight.getSelectedSensorPosition();
     }
     public double getLeftDistanceRaw(){
-        return frontLeft.getSelectedSensorPosition();
+        return rearLeft.getSelectedSensorPosition();
     }
     // public double getRightDistanceMeters(){
     //     return ((double)(frontRight.getSelectedSensorPosition()) / Constants.DriveTrain.COUNTS_PER_ROTAION) * Constants.DriveTrain.WHEEL_CIRCUMFRANCE;

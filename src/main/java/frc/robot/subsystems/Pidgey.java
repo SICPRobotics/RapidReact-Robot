@@ -37,7 +37,7 @@ public class Pidgey extends SubsystemBaseWrapper {
      * @return
      */
     public double getRobotRelativeHeading() {
-        return pigeon.getYaw();
+        return Math.abs(pigeon.getYaw() % 360);
     }
 
     /**

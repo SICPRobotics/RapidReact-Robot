@@ -22,5 +22,10 @@ public abstract class SmartArmCommand extends CommandBase {
         arm.setMotor(getOutput());
     }
 
+    @Override
+    public boolean isFinished() {
+        return Math.abs(target - pidgey.getArmRotation()) < 5;
+    }
+
     public abstract double getOutput();
 }
