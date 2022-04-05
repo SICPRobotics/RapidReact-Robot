@@ -115,17 +115,11 @@ public final class RobotContainer {
         operator.buttons.dPad.down.whileHeld(new DownArmCommand(cargoArm, pidgey));
         cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.5), cargoArm));
 
-    operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
-    operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
+        operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
+        operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
 
-
-    operator.buttons.B.whileHeld(new MotorCommand(climberPivot, -0.2));
-    operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 0.2));
-/**
- * MADDIE PATRICK THIS IS THE PART THAT CHNAGES PIVOT SPEED^^^^^^^^^
- */
-
-
+        operator.buttons.B.whileHeld(new MotorCommand(climberPivot, -0.2));
+        operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 0.2));
         
         operator.buttons.start.whenPressed(new ResetClimber(climber));
     }
