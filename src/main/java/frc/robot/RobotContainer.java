@@ -119,8 +119,8 @@ public final class RobotContainer {
     operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
 
 
-    operator.buttons.B.whileHeld(new MotorCommand(climberPivot, -0.3));
-    operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 0.3));
+    operator.buttons.B.whileHeld(new MotorCommand(climberPivot, -0.2));
+    operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 0.2));
 /**
  * MADDIE PATRICK THIS IS THE PART THAT CHNAGES PIVOT SPEED^^^^^^^^^
  */
