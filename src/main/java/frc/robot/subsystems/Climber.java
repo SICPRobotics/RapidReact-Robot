@@ -15,7 +15,7 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
     private final WPI_TalonFX climberMotor;
 
     // 318285 empirical value, rounded down for extra wiggle room
-    private static final int maxEncoderHeight = 152/*335_000*/;
+    private static final int maxEncoderHeight = 373_000;//335_000;
 
     public Climber(){
         this.climberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
@@ -38,13 +38,13 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
     @Override
     public boolean canTurn(double direction) {
         
-        return true;
+        //return true;
         
-        // if (direction > 0) {
-        //     return getEncoderPosition() < maxEncoderHeight;
-        // } else {
-        //     return getEncoderPosition() > 0;
-        // }
+        if (direction > 0) {
+            return getEncoderPosition() < maxEncoderHeight;
+        } else {
+            return getEncoderPosition() > 0;
+        }
     }
 
     @Override
