@@ -116,7 +116,7 @@ public final class RobotContainer {
         cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.5), cargoArm));
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
-        operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
+        operator.buttons.A.whileHeld(new MotorCommand(climber, -1, true));
 
         operator.buttons.B.whileHeld(new MotorCommand(climberPivot, -0.2));
         operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 0.2));
