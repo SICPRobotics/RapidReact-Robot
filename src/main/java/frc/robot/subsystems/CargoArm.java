@@ -18,7 +18,7 @@ public class CargoArm extends SubsystemBaseWrapper implements MotorSubsystem{
         this.armMotor = new CANSparkMax(Constants.Arm.ARM_MOTOR_ID, MotorType.kBrushless);
         this.armMotor.setIdleMode(IdleMode.kBrake);
     }
-    public void setMotor(double velocity){
+    public void setMotor(double velocity, boolean force){
         this.armMotor.set(velocity);
     }
     public void turnOff(){

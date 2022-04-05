@@ -18,13 +18,9 @@ public class ClimberPivot extends SubsystemBaseWrapper implements MotorSubsystem
         this.pivotMotor.setNeutralMode(NeutralMode.Brake);
     }
 
-
-
-
     @Override
-    public void setMotor(double value) {
+    public void setMotor(double value, boolean force) {
         this.pivotMotor.set(ControlMode.PercentOutput, value);
-        
     }
 
     @Override

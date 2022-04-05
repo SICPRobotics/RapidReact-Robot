@@ -11,7 +11,7 @@ public class CargoIntake extends SubsystemBase implements MotorSubsystem{
     public CargoIntake(){
         this.intakeMotor = new WPI_TalonSRX(Constants.Arm.INTAKE_MOTOR_ID);
     }
-    public void setMotor(double velocity){
+    public void setMotor(double velocity, boolean force){
         this.intakeMotor.set(velocity);
     }
     public void turnOff(){
