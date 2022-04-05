@@ -15,7 +15,7 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
     private final WPI_TalonFX climberMotor;
 
     // 318285 empirical value, rounded down for extra wiggle room
-    private static final int maxEncoderHeight = 373_000;//335_000;
+    private static final int maxEncoderHeight = 363_000;//335_000;
 
     public Climber(){
         this.climberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
