@@ -2,6 +2,10 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import javax.management.ConstructorParameters;
+
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
+
 public class WillowMath { 
     /**
      * 
@@ -266,5 +270,14 @@ public class WillowMath {
         angles[0] = (-((arm2 * Math.sin(angles[1]) * x) + ((arm1 + (arm2 * Math.cos(angles[1]))) * y)) / ((arm2 * Math.sin(angles[1]) * y) + ((arm1 + (arm2 * Math.cos(angles[1]))) * x)));
     
         return angles;
+    }
+    /**
+     * 
+     * @param value the value to be checked
+     * @param absDeadZone the minimum value that that value can be
+     * @return value if the absolute value is larger than or equal to the deadzone 0 if not
+     */
+    public static double deadZoneValue(double value, double absDeadZone){
+        return Math.abs(value) >= absDeadZone ? value : 0;
     }
 }

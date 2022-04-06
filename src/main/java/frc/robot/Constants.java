@@ -58,10 +58,12 @@ public final class Constants {
     public final class Arm{
         public static final int INTAKE_MOTOR_ID = 8;
         public static final int ARM_MOTOR_ID = 5;
+        public static final double ARM_DEAD_ZONE = 0.01;
     }
     public static class Climber{
         public static final int CLIMBER_MOTOR_ID = 4;
         public static final int CLIMBER_SERVO_ID = 4;
+        public static final int PIVOT_MOTOR_ID = 6;
     }
 
     public static class Auto{

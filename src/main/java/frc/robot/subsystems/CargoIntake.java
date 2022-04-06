@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.SmartDashBoardClass;
 
 public class CargoIntake extends SubsystemBase implements MotorSubsystem{
 
@@ -12,7 +11,7 @@ public class CargoIntake extends SubsystemBase implements MotorSubsystem{
     public CargoIntake(){
         this.intakeMotor = new WPI_TalonSRX(Constants.Arm.INTAKE_MOTOR_ID);
     }
-    public void setMotor(double velocity){
+    public void setMotor(double velocity, boolean force){
         this.intakeMotor.set(velocity);
     }
     public void turnOff(){

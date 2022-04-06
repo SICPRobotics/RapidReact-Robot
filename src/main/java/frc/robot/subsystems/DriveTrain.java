@@ -79,7 +79,7 @@ public final class DriveTrain extends SubsystemBaseWrapper implements MotorSubsy
         // chassisSpeeds = new ChassisSpeeds(0,0,0);
         //reset();
     }
-    public void setMotor(double value) {
+    public void setMotor(double value, boolean force) {
         this.robotDrive.arcadeDrive(value, 0);
     }
     public void turnOff() {

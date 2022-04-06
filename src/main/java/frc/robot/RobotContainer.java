@@ -37,6 +37,7 @@ import frc.robot.commands.MotorCommand;
 import frc.robot.controllers.joystick.Joystick;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.ClimberPivot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.Pidgey;
@@ -59,6 +60,7 @@ public final class RobotContainer {
     public SmartDashBoardClass<Double> autoVersion, autoDelay;
     public final Climber climber;
     public final Pidgey pidgey;
+    private final ClimberPivot climberPivot;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -75,6 +77,7 @@ public final class RobotContainer {
         autoDelay = new SmartDashBoardClass<Double>("autoDelay", 0.0);
         trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
+        climberPivot = new ClimberPivot();
         pidgey = new Pidgey();
 
             
@@ -117,9 +120,12 @@ public final class RobotContainer {
         cargoArm.setDefaultCommand(new RunCommand(() -> cargoArm.setMotor(operator.sticks.left.getY() * 0.5), cargoArm));
 
         operator.buttons.Y.whileHeld(new MotorCommand(climber,  1));
-        operator.buttons.A.whileHeld(new MotorCommand(climber, -1));
+        operator.buttons.A.whileHeld(new MotorCommand(climber, -1, true));
 
-        //operator.buttons.B.whenPressed(new ResetClimber(climber));
+        operator.buttons.B.whileHeld(new MotorCommand(climberPivot, -0.2));
+        operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 0.2));
+        
+        operator.buttons.start.whenPressed(new ResetClimber(climber));
     }
 
     public double getY() {
