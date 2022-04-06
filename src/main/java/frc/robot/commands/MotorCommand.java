@@ -13,15 +13,10 @@ public class MotorCommand extends CommandBase {
         this.velocity = velocity;
         addRequirements(motorSubsystem);
     }
-    
+
     @Override
     public void initialize() {
-        if (motorSubsystem.canTurn(velocity)) {
-            this.motorSubsystem.setMotor(velocity);
-        } else {
-            Rumbler.rumble(1, 0.1);
-        }
-        
+        this.motorSubsystem.setMotor(velocity);
     }
 
     @Override
@@ -29,7 +24,7 @@ public class MotorCommand extends CommandBase {
         this.motorSubsystem.turnOff();
 
         if (!motorSubsystem.canTurn(velocity)) {
-            Rumbler.rumble(1, 0.1);
+            Rumbler.rumble(0.1, 0.5);
         }
     }
 

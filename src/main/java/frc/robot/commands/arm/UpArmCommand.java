@@ -6,12 +6,12 @@ import frc.robot.subsystems.Pidgey;
 public class UpArmCommand extends SmartArmCommand {
 
     public UpArmCommand(CargoArm arm, Pidgey pidgey) {
-        super(arm, pidgey, 60);
+        super(arm, pidgey, 60, 60);
     }
 
     @Override
     public double getOutput() {
-        if (progress < 0.2) {
+        if (error > 0.6) {
             return 1;
         } else {
             return 0.4;

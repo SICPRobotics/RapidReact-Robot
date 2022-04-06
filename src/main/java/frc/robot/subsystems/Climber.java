@@ -15,18 +15,22 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
     private final WPI_TalonFX climberMotor;
 
     // 318285 empirical value, rounded down for extra wiggle room
-    private static final int maxEncoderHeight = 310_000;
+    private static final int maxEncoderHeight = 335_000;
 
     public Climber(){
         this.climberMotor = new WPI_TalonFX(Constants.Climber.CLIMBER_MOTOR_ID);
         climberMotor.setNeutralMode(NeutralMode.Brake);
         climberMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        climberMotor.setSelectedSensorPosition(0);
+        resetEncoder();
     }
 
     @Override
-    public void setMotor(double velocity){
-        if (canTurn(velocity)) {
+    public void setMotor(double velocity) {
+        setMotor(velocity, false);
+    }
+
+    public void setMotor(double velocity, boolean force){
+        if (velocity == 0 || force || canTurn(velocity)) {
             this.climberMotor.set(velocity);
         }
     }
@@ -36,7 +40,7 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
         if (direction > 0) {
             return getEncoderPosition() < maxEncoderHeight;
         } else {
-            return getEncoderPosition() > 1000;
+            return getEncoderPosition() > 0;
         }
     }
 
@@ -47,5 +51,13 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
 
     public int getEncoderPosition() {
         return (int) climberMotor.getSelectedSensorPosition();
+    }
+
+    public int getEncoderVelocity() {
+        return (int) climberMotor.getSelectedSensorVelocity();
+    }
+
+    public void resetEncoder() {
+        climberMotor.setSelectedSensorPosition(0);
     }
 }

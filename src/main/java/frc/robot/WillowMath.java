@@ -246,4 +246,25 @@ public class WillowMath {
         }
         return derivative;
     }
+    public static double diameterToCircumfrance(double diameter){
+        return Math.PI * diameter;
+    }  
+    
+    /**
+     * 
+     * @param x x coordinate of the wrist (the shoulder is 0,0 and the rotation of the shoulder is ignored)
+     * @param y y coordinate of the wrist (the shoulder is 0,0 and the rotation of the shoulder is ignored)
+     * @param arm1 length of the first part of the arm
+     * @param arm2 length of the second part of the arm
+     * @return double[2] in which index 0 is the angle for the shoulder and index 1 is the angle for the elbow
+     */
+    public static double[] inverseKinimatics(double x, double y, double arm1, double arm2){
+        double[] angles = new double[2];
+        
+        angles[1] = Math.PI + Math.acos(((square(x) + square(y)) - (square(arm1) + square(arm2))) / (-2 * arm1 * arm2));
+        
+        angles[0] = (-((arm2 * Math.sin(angles[1]) * x) + ((arm1 + (arm2 * Math.cos(angles[1]))) * y)) / ((arm2 * Math.sin(angles[1]) * y) + ((arm1 + (arm2 * Math.cos(angles[1]))) * x)));
+    
+        return angles;
+    }
 }

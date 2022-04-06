@@ -1,6 +1,7 @@
 package frc.robot.controllers.operator;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.SubsystemBaseWrapper;
 
@@ -35,5 +36,13 @@ public class OperatorController extends SubsystemBaseWrapper {
     public void endRumble() {
         rumbleLeft(0);
         rumbleRight(0);
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("LX", sticks.left.getX());
+        SmartDashboard.putNumber("LY", sticks.left.getY());
+        SmartDashboard.putNumber("RX", sticks.right.getX());
+        SmartDashboard.putNumber("RY", sticks.right.getY());
     }
 }
