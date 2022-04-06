@@ -26,6 +26,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.arm.DownArmCommand;
 import frc.robot.commands.arm.UpArmCommand;
 import frc.robot.commands.drive.DriveDistance;
+import frc.robot.commands.drive.TurnRelative;
 import frc.robot.commands.drive.TurnTo;
 
 import static frc.robot.RobotContainer.*;
@@ -43,6 +44,7 @@ public class CustomAuto extends CommandBase {
 
     @Override
     public void initialize() {
+        System.out.println("Initializing autonomous.");
         robot.pidgey.resetRobotHeading();
         timer.reset();
         timer.start();
@@ -54,12 +56,14 @@ public class CustomAuto extends CommandBase {
         JsonElement auto = gson.fromJson(autoString, JsonObject.class);
         JsonArray instructions = auto.getAsJsonObject().get("instructions").getAsJsonArray();
         
-        for (JsonElement instruction : instructions) {
-            commands.add(parseCustomAutoStep(instruction.getAsJsonObject()));
+        for (int i = 0; i < instructions.size(); i++) {
+            commands.add(parseCustomAutoStep(instructions.get(i).getAsJsonObject()));
         }
 
         index = 0;
+        System.out.println("Added " + commands.size() + " commands.");
         if (commands.size() > 0) {
+            System.out.println("Initialized first command.");
             commands.get(0).initialize();
         }
     }
@@ -107,7 +111,7 @@ public class CustomAuto extends CommandBase {
         } else if (type.equals("wait")) {
             // Do nothing
         } else if (type.equals("relativeTurn")) {
-            return new TurnTo(robot.driveTrain, robot.pidgey, rotation);
+            return new TurnRelative(robot.driveTrain, robot.pidgey, rotation);
         } else if (type.equals("turnToHeading")) {
             double heading = instruction.get("heading").getAsDouble();
             return new TurnTo(robot.driveTrain, robot.pidgey, heading);
@@ -118,15 +122,22 @@ public class CustomAuto extends CommandBase {
         } else if (type.equals("intake")) {
             String direction = instruction.get("direction").getAsString();
             if (direction.equals("in")) {
-                start = () -> robot.cargoIntake.intakeIn();
+                execute = () -> robot.cargoIntake.intakeIn();
             } else if (direction.equals("out")) {
-                start = () -> robot.cargoIntake.intakeOut();
+                execute = () -> robot.cargoIntake.intakeOut();
+            } else if (direction.equals("off")) {
+                execute = () -> robot.cargoIntake.intakeOff();
             } else {
-                start = () -> robot.cargoIntake.intakeOff();
+                System.out.println("Unknown direction " + direction);
             }
         }
 
-        return new FunctionalCommand(start, execute, b -> end.run(), isFinished);
+        final var exec = execute;
+
+        return new FunctionalCommand(start, () -> {
+            System.out.println("Here!");
+            exec.run();
+        }, b -> end.run(), isFinished);
     }
 
     @Override
@@ -145,7 +156,7 @@ public class CustomAuto extends CommandBase {
                 commands.get(index).initialize();
             }
         } else {
-            //System.out.println("Ran step " + index);
+            System.out.println("Ran step " + index);
             current.execute();
         }
     }

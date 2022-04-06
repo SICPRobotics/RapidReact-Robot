@@ -6,17 +6,18 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pidgey;
 
-public class TurnTo extends CommandBase{
+public class TurnRelative extends CommandBase{
     
     private final DriveTrain driveTrain;
     private final Pidgey pidgey;
-    private final double target, speed, direction;
+    private final double relativeTarget, speed, direction;
+    private double target;
     private final PIDController pidController = new PIDController(0.05, 0, 0.006);
 
-    public TurnTo(DriveTrain driveTrain, Pidgey pidgey, double target){
+    public TurnRelative(DriveTrain driveTrain, Pidgey pidgey, double target){
         this.driveTrain = driveTrain;
         this.pidgey = pidgey;
-        this.target = target;
+        this.relativeTarget = target;
         this.direction = Math.signum(target);
         this.speed = 0.5; // add constatnt for deafult auto speed
         pidController.enableContinuousInput(0, 360);
@@ -24,10 +25,11 @@ public class TurnTo extends CommandBase{
     @Override
     public void initialize() {
         //this.driveTrain.diffDrive(speed * this.direction , -speed * this.direction);
+        target = pidgey.getRobotHeading() + relativeTarget;
     }
     @Override
     public void execute() {
-        System.out.println("Ran TurnTo");
+        System.out.println("Ran TurnRelative");
         //this.driveTrain.diffDrive(speed * this.direction , -speed * this.direction);
         double amount = pidController.calculate(pidgey.getRobotHeading(), target);
         driveTrain.diffDrive(amount, -amount);

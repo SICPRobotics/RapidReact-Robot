@@ -3,12 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.Pigeon2.AxisDirection;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SubsystemBaseWrapper;
 
 public class Pidgey extends SubsystemBaseWrapper {
     public final Pigeon2 pigeon = new Pigeon2(10);
     private final double[] vXYZ = new double[3];
+    private final Timer timer = new Timer();
 
     public Pidgey() {
         super();
@@ -16,6 +18,8 @@ public class Pidgey extends SubsystemBaseWrapper {
         pigeon.configMountPose(AxisDirection.PositiveY, AxisDirection.NegativeX);
         pigeon.setYaw(0);
         pigeon.configMountPosePitch(6.10);
+
+        timer.start();
     }
     
     /**
@@ -36,8 +40,17 @@ public class Pidgey extends SubsystemBaseWrapper {
      * Automatically calibrated at startup; use resetRobotHeading to calibrate again.
      * @return
      */
-    public double getRobotRelativeHeading() {
+    public double getRobotHeading() {
         return Math.abs(pigeon.getYaw() % 360);
+    }
+
+    /**
+     * Gets the rate of change of the robot heading, in
+     * degrees per second.
+     * @return
+     */
+    public double getRobotAngularVelocity() {
+    return (currentHeading - lastHeading) / (currentTime - lastTime);
     }
 
     /**
@@ -54,8 +67,18 @@ public class Pidgey extends SubsystemBaseWrapper {
         return vXYZ[2];
     }*/
 
+    private double lastHeading;
+    private double currentHeading;
+    private double lastTime;
+    private double currentTime;
+
     @Override
     public void periodic() {
+        lastHeading = currentHeading;
+        currentHeading = getRobotHeading();
+        lastTime = currentTime;
+        currentTime = timer.get();
+        
         SmartDashboard.putNumber("Pigeon Yaw", pigeon.getYaw());
         SmartDashboard.putNumber("Pigeon Pitch", pigeon.getPitch());
         SmartDashboard.putNumber("Pigeon Roll", pigeon.getRoll());
