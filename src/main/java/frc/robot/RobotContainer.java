@@ -20,13 +20,13 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.AutonumusCommand;
-import frc.robot.commands.DriveWithJoystick;
+import frc.robot.commands.drive.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.ResetClimber;
 import frc.robot.commands.arm.DownArmCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
 import frc.robot.commands.auto.CustomAuto;
+import frc.robot.commands.auto.OldAutoCommand;
 import frc.robot.commands.drive.DriveWithJoystick;
 import frc.robot.commands.arm.UpArmCommand;
 import frc.robot.commands.rumble.Rumbler;
@@ -48,17 +48,17 @@ import frc.robot.subsystems.Pidgey;
  * commands, and button mappings) should be declared here.
  */
 public final class RobotContainer {
-    // The robot's subsystems and commands are defined here...
-    private final Joystick joystick;
-    private final DriveTrain driveTrain;
-    private final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
-    private final GsonSaver gsonSaver;
-    private final OperatorController operator = new OperatorController(1);
-    private final CargoArm cargoArm;
-    private final CargoIntake cargoIntake;
-    private SmartDashBoardClass<Double> autoVersion, autoDelay;
-    private final Climber climber;
-    private final Pidgey pidgey;
+    public static final Gson gson = new Gson();
+    public final Joystick joystick;
+    public final DriveTrain driveTrain;
+    public final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
+    public final GsonSaver gsonSaver;
+    public final OperatorController operator = new OperatorController(1);
+    public final CargoArm cargoArm;
+    public final CargoIntake cargoIntake;
+    public SmartDashBoardClass<Double> autoVersion, autoDelay;
+    public final Climber climber;
+    public final Pidgey pidgey;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -152,12 +152,17 @@ public final class RobotContainer {
     // }
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
-        return new CustomAuto(this);
+        Command auto;
+        if (SmartDashboard.getBoolean("useCustomAuto", false)) {
+            auto = new CustomAuto(this);
+        } else {
+            auto = new OldAutoCommand(driveTrain, cargoArm, cargoIntake, this.autoVersion.getValue().intValue(), this.autoDelay.getValue().doubleValue());
+        }
+        
         return new ParallelCommandGroup(
-            new AutonumusCommand(driveTrain, cargoArm, cargoIntake, this.autoVersion.getValue().intValue(), this.autoDelay.getValue().doubleValue()),
+            auto,
             new ResetClimber(climber)
         );
-        //return trajectoryGeneration.getTrajectoryCommand(driveTrain, "nottest");
     }
     
 }

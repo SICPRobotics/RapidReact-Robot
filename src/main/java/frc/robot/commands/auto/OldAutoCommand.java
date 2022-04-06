@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -6,7 +6,7 @@ import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.DriveTrain;
 
-public class AutonumusCommand extends CommandBase{
+public class OldAutoCommand extends CommandBase{
     private final DriveTrain driveTrain;
     private final CargoArm arm; 
     private CargoIntake intake;
@@ -19,7 +19,7 @@ public class AutonumusCommand extends CommandBase{
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutonumusCommand(DriveTrain driveTrain, CargoArm arm, CargoIntake intake, int verison, double waitTime){
+  public OldAutoCommand(DriveTrain driveTrain, CargoArm arm, CargoIntake intake, int verison, double waitTime){
     this.driveTrain = driveTrain;
     this.arm = arm;
     this.intake = intake;
