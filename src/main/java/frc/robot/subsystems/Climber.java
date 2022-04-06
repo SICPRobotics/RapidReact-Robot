@@ -43,7 +43,8 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
         if (direction > 0) {
             return getEncoderPosition() < maxEncoderHeight;
         } else {
-            return getEncoderPosition() > 0;
+            return true;
+            //return getEncoderPosition() > 0;
         }
     }
 
