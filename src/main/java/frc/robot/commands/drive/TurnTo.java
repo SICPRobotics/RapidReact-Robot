@@ -1,6 +1,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
@@ -12,6 +13,7 @@ public class TurnTo extends CommandBase{
     private final Pidgey pidgey;
     private final double target, speed, direction;
     private final PIDController pidController = new PIDController(0.05, 0, 0.006);
+    private final Timer timer = new Timer();
 
     public TurnTo(DriveTrain driveTrain, Pidgey pidgey, double target){
         this.driveTrain = driveTrain;
@@ -34,7 +36,7 @@ public class TurnTo extends CommandBase{
     }
     @Override
     public boolean isFinished() {
-        return Math.abs(this.target - pidgey.getRobotHeading()) < 4 && pidgey.getRobotAngularVelocity() < 4;
+        return  timer.get() > 5 || Math.abs(this.target - pidgey.getRobotHeading()) < 4 && pidgey.getRobotAngularVelocity() < 4;
     }
     @Override
     public void end(boolean interrupted) {
