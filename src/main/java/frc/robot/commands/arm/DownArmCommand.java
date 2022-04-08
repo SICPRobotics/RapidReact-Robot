@@ -12,7 +12,7 @@ public class DownArmCommand extends SmartArmCommand {
     @Override
     public double getOutput() {
         if (error > -0.1) {
-            return 0.2;
+            return 0.1;
         } else if (error > -0.6) {
             return 0;
         } else {
@@ -20,4 +20,8 @@ public class DownArmCommand extends SmartArmCommand {
         }
     }
     
+    @Override
+    public void end(boolean interrupted) {
+        this.arm.setMotor(0);
+    }
 }

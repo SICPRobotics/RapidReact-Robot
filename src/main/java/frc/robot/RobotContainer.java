@@ -52,7 +52,7 @@ public final class RobotContainer {
     public static final Gson gson = new Gson();
     public final Joystick joystick;
     public final DriveTrain driveTrain;
-    public final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
+    //public final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
     public final GsonSaver gsonSaver;
     public final OperatorController operator = new OperatorController(1);
     public final CargoArm cargoArm;
@@ -75,7 +75,7 @@ public final class RobotContainer {
         cargoIntake = new CargoIntake();
         autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
         autoDelay = new SmartDashBoardClass<Double>("autoDelay", 0.0);
-        trajectoryGeneration.addGson(gsonSaver);
+        //trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
         climberPivot = new ClimberPivot();
         pidgey = new Pidgey();
@@ -126,6 +126,8 @@ public final class RobotContainer {
         operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 0.2));
         
         operator.buttons.start.whenPressed(new ResetClimber(climber));
+
+        operator.buttons.back.whileHeld(new FunctionalCommand(() -> climber.override = true, () -> {}, (b) -> climber.override = false, () -> false));
     }
 
     public double getY() {
@@ -159,6 +161,14 @@ public final class RobotContainer {
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
         Command auto;
+        String key = "useCustomAuto";
+
+        if (!SmartDashboard.containsKey(key)) {
+            SmartDashboard.putBoolean(key, false);
+        }
+
+        SmartDashboard.setPersistent(key);
+
         if (SmartDashboard.getBoolean("useCustomAuto", false)) {
             auto = new CustomAuto(this);
         } else {

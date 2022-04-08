@@ -19,5 +19,10 @@ public class UpArmCommand extends SmartArmCommand {
             return 0.4;
         }
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        this.arm.setMotor(0.3);
+    }
     
 }

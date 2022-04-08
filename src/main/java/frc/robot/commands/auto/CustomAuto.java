@@ -132,6 +132,7 @@ public class CustomAuto extends CommandBase {
             }
         }
 
+
         final var exec = execute;
 
         return new FunctionalCommand(start, () -> {
@@ -151,6 +152,7 @@ public class CustomAuto extends CommandBase {
         if (current.isFinished()) {
             System.out.println("Next auto step");
             timer.reset();
+            current.end(false);
             index++;
             if (index < commands.size()) {
                 commands.get(index).initialize();

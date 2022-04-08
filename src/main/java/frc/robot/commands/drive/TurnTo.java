@@ -32,7 +32,7 @@ public class TurnTo extends CommandBase{
         System.out.println("Ran TurnTo");
         //this.driveTrain.diffDrive(speed * this.direction , -speed * this.direction);
         double amount = pidController.calculate(pidgey.getRobotHeading(), target);
-        driveTrain.diffDrive(amount, -amount);
+        driveTrain.diffDrive(-amount, amount);
     }
     @Override
     public boolean isFinished() {

@@ -41,7 +41,7 @@ public class Pidgey extends SubsystemBaseWrapper {
      * @return
      */
     public double getRobotHeading() {
-        return Math.abs(pigeon.getYaw() % 360);
+        return ((pigeon.getYaw() % 360) + 360) % 360;
     }
 
     /**
@@ -50,7 +50,7 @@ public class Pidgey extends SubsystemBaseWrapper {
      * @return
      */
     public double getRobotAngularVelocity() {
-    return (currentHeading - lastHeading) / (currentTime - lastTime);
+        return (currentHeading - lastHeading) / (currentTime - lastTime);
     }
 
     /**
@@ -85,5 +85,6 @@ public class Pidgey extends SubsystemBaseWrapper {
         SmartDashboard.putNumber("Pigeon Pitch", pigeon.getPitch());
         SmartDashboard.putNumber("Pigeon Roll", pigeon.getRoll());
         SmartDashboard.putNumber("Pigeon Arm Rotation", getArmRotation());
+        SmartDashboard.putNumber("Pigeon Robot Heading", getRobotHeading());
     }
 }
