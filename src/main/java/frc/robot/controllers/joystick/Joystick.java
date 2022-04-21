@@ -34,8 +34,8 @@ public class Joystick {
     }
 
     public double getZ() {
-        return this.joystick.getRawAxis(2);
-    }
+        return this.joystick.getRawAxis(Constants.Joystick.Z_AXIS);
+    } 
 
     public double getScale() {
         return ((-this.joystick.getRawAxis(Constants.Joystick.SCALE_AXIS) + 1) / 2);

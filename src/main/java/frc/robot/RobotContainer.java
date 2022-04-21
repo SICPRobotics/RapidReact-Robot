@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.drive.DriveWithJoystick;
+import frc.robot.commands.drive.SwerveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.ResetClimber;
 import frc.robot.commands.arm.DownArmCommand;
@@ -41,6 +42,7 @@ import frc.robot.subsystems.ClimberPivot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.Pidgey;
+import frc.robot.subsystems.SDriveTrain;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -51,13 +53,13 @@ import frc.robot.subsystems.Pidgey;
 public final class RobotContainer {
     public static final Gson gson = new Gson();
     public final Joystick joystick;
-    public final DriveTrain driveTrain;
+    public final SDriveTrain sDriveTrain;
     //public final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
     public final GsonSaver gsonSaver;
     public final OperatorController operator = new OperatorController(1);
     public final CargoArm cargoArm;
     public final CargoIntake cargoIntake;
-    public SmartDashBoardClass<Double> autoVersion, autoDelay;
+    //public SmartDashBoardClass<Double> autoVersion, autoDelay;
     public final Climber climber;
     public final Pidgey pidgey;
     private final ClimberPivot climberPivot;
@@ -68,21 +70,21 @@ public final class RobotContainer {
     public RobotContainer() {
         CameraServer.startAutomaticCapture();
         Rumbler.setOperator(operator);
-        driveTrain = new DriveTrain();
+        sDriveTrain = new SDriveTrain();
         joystick = new Joystick(0);
         gsonSaver = new GsonSaver();
         cargoArm = new CargoArm();
         cargoIntake = new CargoIntake();
-        autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
-        autoDelay = new SmartDashBoardClass<Double>("autoDelay", 0.0);
+        // autoVersion = new SmartDashBoardClass<Double>("autoVersion", 0.0);
+        // autoDelay = new SmartDashBoardClass<Double>("autoDelay", 0.0);
         //trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
         climberPivot = new ClimberPivot();
         pidgey = new Pidgey();
 
             
-        driveTrain.setDefaultCommand(
-            new DriveWithJoystick(driveTrain, this::getY, this::getX, joystick::getScale, false));
+            sDriveTrain.setDefaultCommand(
+            new SwerveWithJoystick(sDriveTrain, this::getX, this::getY, joystick::getZ, joystick::getScale, false));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -110,7 +112,7 @@ public final class RobotContainer {
      */
     private void configureButtonBindings() {
         joystick.thumb.toggleWhenPressed(
-            new DriveWithJoystick(driveTrain, this::getY, this::getX, joystick::getScale, true));
+            new SwerveWithJoystick(sDriveTrain, this::getX, this::getY, joystick::getZ, joystick::getScale, true));
        
         operator.buttons.RB.whileHeld(new MotorCommand(cargoIntake, -0.8));
         operator.buttons.LB.whileHeld(new MotorCommand(cargoIntake,  1));
@@ -160,25 +162,26 @@ public final class RobotContainer {
     // }
     // * @return the command to run in autonomous
     public Command getAutonomousCommand() {
-        Command auto;
-        String key = "useCustomAuto";
+        // Command auto;
+        // String key = "useCustomAuto";
 
-        if (!SmartDashboard.containsKey(key)) {
-            SmartDashboard.putBoolean(key, false);
-        }
+        // if (!SmartDashboard.containsKey(key)) {
+        //     SmartDashboard.putBoolean(key, false);
+        // }
 
-        SmartDashboard.setPersistent(key);
+        // SmartDashboard.setPersistent(key);
 
-        if (SmartDashboard.getBoolean("useCustomAuto", false)) {
-            auto = new CustomAuto(this);
-        } else {
-            auto = new OldAutoCommand(driveTrain, cargoArm, cargoIntake, this.autoVersion.getValue().intValue(), this.autoDelay.getValue().doubleValue());
-        }
+        // if (SmartDashboard.getBoolean("useCustomAuto", false)) {
+        //     auto = new CustomAuto(this);
+        // } else {
+        //     auto = new OldAutoCommand(driveTrain, cargoArm, cargoIntake, this.autoVersion.getValue().intValue(), this.autoDelay.getValue().doubleValue());
+        // }
         
-        return new ParallelCommandGroup(
-            auto,
-            new ResetClimber(climber)
-        );
+        // return new ParallelCommandGroup(
+        //     auto,
+        //     new ResetClimber(climber)
+        // );
+        return null;
     }
     
 }
