@@ -26,8 +26,6 @@ import frc.robot.commands.MotorCommand;
 import frc.robot.commands.ResetClimber;
 import frc.robot.commands.arm.DownArmCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
-import frc.robot.commands.auto.CustomAuto;
-import frc.robot.commands.auto.OldAutoCommand;
 import frc.robot.commands.drive.DriveWithJoystick;
 import frc.robot.commands.arm.UpArmCommand;
 import frc.robot.commands.rumble.Rumbler;
@@ -54,6 +52,7 @@ public final class RobotContainer {
     public static final Gson gson = new Gson();
     public final Joystick joystick;
     public final SDriveTrain sDriveTrain;
+
     //public final TrajectoryGeneration trajectoryGeneration = new TrajectoryGeneration();
     public final GsonSaver gsonSaver;
     public final OperatorController operator = new OperatorController(1);
@@ -70,7 +69,8 @@ public final class RobotContainer {
     public RobotContainer() {
         CameraServer.startAutomaticCapture();
         Rumbler.setOperator(operator);
-        sDriveTrain = new SDriveTrain();
+        pidgey = new Pidgey();
+        sDriveTrain = new SDriveTrain(pidgey);
         joystick = new Joystick(0);
         gsonSaver = new GsonSaver();
         cargoArm = new CargoArm();
@@ -80,7 +80,6 @@ public final class RobotContainer {
         //trajectoryGeneration.addGson(gsonSaver);
         climber = new Climber();
         climberPivot = new ClimberPivot();
-        pidgey = new Pidgey();
 
             
             sDriveTrain.setDefaultCommand(

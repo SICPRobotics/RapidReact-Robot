@@ -1,0 +1,38 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/CargoArm": "Subsystem",
+      "/LiveWindow/CargoIntake": "Subsystem",
+      "/LiveWindow/Climber": "Subsystem",
+      "/LiveWindow/ClimberPivot": "Subsystem",
+      "/LiveWindow/OperatorController": "Subsystem",
+      "/LiveWindow/Pidgey": "Subsystem",
+      "/LiveWindow/SDriveTrain": "Subsystem",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon FX [4]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon SRX [8]": "Motor Controller",
+      "/SmartDashboard/CargoArm": "Subsystem",
+      "/SmartDashboard/Climber": "Subsystem",
+      "/SmartDashboard/ClimberPivot": "Subsystem",
+      "/SmartDashboard/OperatorController": "Subsystem",
+      "/SmartDashboard/Pidgey": "Subsystem",
+      "/SmartDashboard/SDriveTrain": "Subsystem"
+    },
+    "windows": {
+      "/SmartDashboard/SDriveTrain": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "SmartDashboard": {
+      "SDriveTrain": {
+        "open": true
+      },
+      "open": true
+    }
+  }
+}

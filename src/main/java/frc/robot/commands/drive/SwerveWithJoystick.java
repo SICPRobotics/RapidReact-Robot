@@ -25,8 +25,15 @@ public class SwerveWithJoystick extends CommandBase{
         this.xValueGetter = xValueGetter;
         this.yValueGetter = yValueGetter;
         this.rotateValueGetter = rotateValueGetter;
-        this.adjustValueGetter = scaleValueGetter;
-        this.isInverted = isInverted;
+        // this.adjustValueGetter = scaleValueGetter;
+        this.adjustValueGetter = new DoubleSupplier() {
+            @Override
+            public double getAsDouble() {
+                return 1;
+            }
+        };
+        //this.isInverted = isInverted;
+        this.isInverted = false;
         //this.controlSystem = controlSystem;
         addRequirements(sDriveTrain);
     }

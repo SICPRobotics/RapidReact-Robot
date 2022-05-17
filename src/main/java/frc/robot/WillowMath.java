@@ -297,13 +297,33 @@ public class WillowMath {
         }
         return array;
     }
+    public static double[] sort(double[] d){
+        while(!sorted(d)){
+            for(int i = 0; i < d.length - 1; i++){
+                if(d[i] > d[i + 1]){
+                    double s = d[i];
+                    d[i] = d[i + 1];
+                    d[i + 1] = s;
+                }
+            }
+        }
+        return d;
+    }
+    public static boolean sorted(double[] d){
+        for(int i = 0; i < d.length - 1; i++){
+            if(d[i] > d[i + 1]){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
     public static double max(double[] values){
-        return selectionSort(values)[values.length - 1];
+        return sort(values)[values.length - 1];
     }
     public static double min(double[] values){
-        return selectionSort(values)[0];
+        return sort(values)[0];
     }
     public static double[] abs(double[] values){
         for(int a = 0; a < values.length; a++){
