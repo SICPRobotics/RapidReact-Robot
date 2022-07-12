@@ -19,11 +19,11 @@ public class CargoIntake extends SubsystemBase implements MotorSubsystem{
     }
     public void intakeIn() {
         System.out.println("RAN INTAKE IN");
-        setMotor(-1);
+        setMotor(-0.8);
     }
 
     public void intakeOut() {
-        setMotor(0.8);
+        setMotor(1);
         System.out.println("RAN INTAKE OUT");
     }
 
