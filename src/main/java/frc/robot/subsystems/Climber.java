@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Servo;
 import frc.robot.Constants;
 import frc.robot.SubsystemBaseWrapper;
 
-public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
+public class Climber extends SubsystemBaseWrapper implements MotorSubsystem, EncoderSubsystem {
     
     private final WPI_TalonFX climberMotor;
 
@@ -57,14 +57,17 @@ public class Climber extends SubsystemBaseWrapper implements MotorSubsystem {
         this.climberMotor.set(0);
     }
 
+    @Override
     public int getEncoderPosition() {
         return (int) climberMotor.getSelectedSensorPosition();
     }
 
+    @Override
     public int getEncoderVelocity() {
         return (int) climberMotor.getSelectedSensorVelocity();
     }
 
+    @Override
     public void resetEncoder() {
         climberMotor.setSelectedSensorPosition(0);
     }

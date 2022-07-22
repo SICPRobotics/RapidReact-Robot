@@ -17,16 +17,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.drive.DriveWithJoystick;
 import frc.robot.commands.MotorCommand;
 import frc.robot.commands.ResetClimber;
+import frc.robot.commands.ResetEncoder;
+import frc.robot.commands.TurnUntilStop;
 import frc.robot.commands.arm.DownArmCommand;
 import frc.robot.commands.arm.SimpleArmCommand;
 import frc.robot.commands.auto.CustomAuto;
 import frc.robot.commands.auto.OldAutoCommand;
+import frc.robot.commands.autoclimb.AutoClimb;
 import frc.robot.commands.drive.DriveWithJoystick;
 import frc.robot.commands.arm.UpArmCommand;
 import frc.robot.commands.rumble.Rumbler;
@@ -129,9 +133,24 @@ public final class RobotContainer {
         operator.buttons.X.whileHeld(new MotorCommand(climberPivot, 0.2));
         joystick.button(4).whileHeld(new MotorCommand(climberPivot, 0.2));
         
-        operator.buttons.start.whenPressed(new ResetClimber(climber));
-
+        operator.buttons.start.whenPressed(getCallibrationCommand());
         operator.buttons.back.whileHeld(new FunctionalCommand(() -> climber.override = true, () -> {}, (b) -> climber.override = false, () -> false));
+    
+        //operator.buttons.RS.toggleWhenPressed(new AutoClimb(climber, climberPivot, pidgey));
+    }
+
+    public Command getCallibrationCommand() {
+        return new ParallelCommandGroup(
+            new SequentialCommandGroup(
+                new MotorCommand(climber, 1).withTimeout(0.1),
+                new ResetClimber(climber)
+            ),
+            new SequentialCommandGroup(
+                new MotorCommand(climberPivot, 0.2).withTimeout(0.2),
+                new TurnUntilStop<>(climberPivot, -0.2, 1000),
+                new ResetEncoder(climberPivot)
+            )
+        );
     }
 
     public double getY() {
@@ -181,7 +200,7 @@ public final class RobotContainer {
         
         return new ParallelCommandGroup(
             auto,
-            new ResetClimber(climber)
+            getCallibrationCommand()
         );
     }
     
